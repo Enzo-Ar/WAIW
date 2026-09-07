@@ -2,6 +2,10 @@
   "name": "nodeproj",
   "version": "1.0.0",
   "description": "projeto feito no casual",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enzo-Ar/WAIW"
+  },
   "license": "ISC",
   "author": "Enzo Armelin Barros",
   "type": "module",
