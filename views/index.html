@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TFIAW</title>
+  <meta name="TFIAW" content="The fuck i am watching twin.">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estilos próprios -->
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar navbar-expand-md p-0">
+        <a class="logo" href="#topo">
+          <span class="logo-tape" aria-hidden="true"></span>
+          TFIAW
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Abrir menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+          <ul class="navbar-nav gap-md-4 gap-2 mt-3 mt-md-0">
+            <li class="nav-item"><a class="nav-link" href="categoria.html/?tipo=series">Series</a></li>
+            <li class="nav-item"><a class="nav-link" href="categoria.html/?tipo=filmes">Movies</a></li>
+            <li class="nav-item"><a class="nav-link" href="categoria.html/?tipo=cartoons">Cartoons</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="topo">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-texture" aria-hidden="true"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-9">
+            <h1 class="hero-title">Whatever<br>I Am Watching</h1>
+            <p class="hero-subtitle">
+              Purely Personal.
+            </p>
+          </div>
+        </div>
+
+        <div class="stat-row" role="group" aria-label="Resumo do que já foi assistido">
+          <div class="stat-chip">
+            <span class="stat-value">0</span>
+            <span class="stat-label">filmes</span>
+          </div>
+          <div class="stat-chip stat-chip--alt">
+            <span class="stat-value">0</span>
+            <span class="stat-label">séries</span>
+          </div>
+          <div class="stat-chip">
+            <span class="stat-value">0</span>
+            <span class="stat-label">desenhos</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="hazard-divider" aria-hidden="true"></div>
+
+    <!-- NOVO REGISTRO (mockup visual, sem função)
+    <section class="entry-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="entry-card">
+              <span class="entry-card__tape" aria-hidden="true"></span>
+              <h2 class="entry-card__title">Novo registro</h2>
+
+              <form action="#" method="post">
+                <div class="row g-3">
+                  <div class="col-12 col-md-7">
+                    <label for="titulo" class="form-label">Título</label>
+                    <input type="text" class="form-control field" id="titulo" name="titulo" placeholder="Nome do filme, série ou desenho">
+                  </div>
+
+                  <div class="col-12 col-md-5">
+                    <label for="tipo" class="form-label">Tipo</label>
+                    <select class="form-select field" id="tipo" name="tipo">
+                      <option selected>Filme</option>
+                      <option>Série</option>
+                      <option>Desenho</option>
+                    </select>
+                  </div>
+
+                  <div class="col-6 col-md-3">
+                    <label for="nota" class="form-label">Nota</label>
+                    <input type="number" class="form-control field" id="nota" name="nota" placeholder="0 a 10" min="0" max="10" step="0.1">
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <label for="data" class="form-label">Assistido em</label>
+                    <input type="date" class="form-control field" id="data" name="data">
+                  </div>
+
+                  <div class="col-12 col-md-5">
+                    <label for="categoria" class="form-label">Categoria</label>
+                    <input type="text" class="form-control field" id="categoria" name="categoria" placeholder="Ex: skate, terror, anime">
+                  </div>
+
+                  <div class="col-12">
+                    <label for="comentario" class="form-label">Comentário</label>
+                    <textarea class="form-control field" id="comentario" name="comentario" rows="3" placeholder="O que achou de verdade"></textarea>
+                  </div>
+
+                  <div class="col-12">
+                    <button type="submit" class="btn-save">Salvar registro</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- REGISTROS -->
+    <section class="records-section" id="registros">
+      <div class="container">
+
+        <div class="section-head" id="categorias">
+          <h2>Últimos registros</h2>
+          <ul class="tag-row">
+            <li class="tag">Skate</li>
+            <li class="tag">Ação</li>
+            <li class="tag">Terror</li>
+            <li class="tag">Anime</li>
+            <li class="tag">Infantil</li>
+            <li class="tag">Documentário</li>
+          </ul>
+        </div>
+
+        <div class="row g-4">
+
+          <div class="col-12 col-sm-6 col-lg-4">
+            <article class="record-card">
+              <span class="record-card__tape" aria-hidden="true"></span>
+              <div class="record-card__thumb">
+                <span class="record-card__letter">R</span>
+                <span class="badge-type badge-type--filme">Filme</span>
+              </div>
+              <div class="record-card__body">
+                <h3 class="record-card__title">Rampa Vazia</h3>
+                <div class="record-card__meta">
+                  <span class="meta-date">12/03/2024</span>
+                  <span class="meta-score">8.7<small>/10</small></span>
+                </div>
+                <p class="record-card__comment">"Um filme sobre andar de skate sozinho à noite. A trilha sonora carrega o filme inteiro."</p>
+              </div>
+            </article>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" id="sobre">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <p class="footer-text">TFIAW - The Fuck I Am Watching?, I never remember what i watch, so i need this.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <span class="footer-tag">EST. 2026</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
