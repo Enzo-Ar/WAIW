@@ -3,6 +3,7 @@ import * as express from 'express';
 import * as path from 'path';
 
 import rootRouter from './routes/root.js';
+import apiRouter from './routes/api/api.js';
 
 const PORT = process.env.PORT || 8080;
 const app = exApp();
@@ -22,7 +23,7 @@ app.use('/', (req, res, next) => {
 })
 
 app.use('/', rootRouter);
-
+app.use('/api', apiRouter);
 
 app.listen(PORT, (err) => {
     if (err) throw err;

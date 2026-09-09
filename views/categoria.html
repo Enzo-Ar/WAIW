@@ -30,7 +30,7 @@
       <nav class="navbar navbar-expand-md p-0">
         <a class="logo" href="/">
           <span class="logo-tape" aria-hidden="true"></span>
-          TFIAW
+          WAIW
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Abrir menu">
@@ -75,7 +75,7 @@
         <div class="stat-row" role="group" aria-label="Resumo da categoria">
           <div class="stat-chip">
             <!-- BACKEND: total de registros encontrados para essa categoria -->
-            <span class="stat-value"></span>
+            <span class="stat-value" id="founder"></span>
             <span class="stat-label">encontrados</span>
           </div>
         </div>
@@ -106,26 +106,8 @@
           A classe do selo (badge-type--filme / badge-type--serie / badge-type--desenho)
           deve seguir a categoria de cada item.
         -->
-        <div class="row g-4">
-
-          <div class="col-12 col-sm-6 col-lg-4">
-            <article class="record-card">
-              <span class="record-card__tape" aria-hidden="true"></span>
-              <div class="record-card__thumb">
-                <span class="record-card__letter">R</span>
-                <span class="badge-type badge-type--filme">Filme</span>
-              </div>
-              <div class="record-card__body">
-                <h3 class="record-card__title">Rampa Vazia</h3>
-                <div class="record-card__meta">
-                  <span class="meta-date">12/03/2024</span>
-                  <span class="meta-score">8.7<small>/10</small></span>
-                </div>
-                <p class="record-card__comment">"Um filme sobre andar de skate sozinho à noite. A trilha sonora carrega o filme inteiro."</p>
-              </div>
-            </article>
-          </div>
-
+        <div class="row g-4" id="wanted-lister">
+        <!-- filmes/series/cartoons -->
         </div>
 
         <!--
@@ -167,7 +149,7 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-8">
-          <p class="footer-text">TFIAW - The Fuck I Am Watching?, I never remember what i watch, so i need this.</p>
+          <p class="footer-text">WAIW - The Fuck I Am Watching?, I never remember what i watch, so i need this.</p>
         </div>
         <div class="col-md-4 text-md-end">
           <span class="footer-tag">EST. 2026</span>
