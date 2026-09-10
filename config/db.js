@@ -10,6 +10,11 @@ export const query = (text, params) => {
     return pool.query(text, params)
 };
 
+//for the use of single clients to make mult transactions querys
+export const connect = () => {
+    return pool.connect();
+}
+
 //same thing but to close the pool
 export const end = () => {
     return pool.end();

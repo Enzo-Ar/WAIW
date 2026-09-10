@@ -48,6 +48,7 @@ const init = async () => {
     </div> */
 
     console.log(data);
+    const aaa = "https://http2.mlstatic.com/D_NQ_NP_618685-CBT93673694347_092025-O.webp";
 
     const founder = document.querySelector('#founder');
     founder.textContent = data.length;
@@ -57,7 +58,7 @@ const init = async () => {
 
         //creating wanted card
         const card = document.createElement('div');
-        card.className = 'col-12 col-sm-6 col-lg-4';
+        card.className = 'col-6 col-sm-4 col-lg-3';
 
         const record_card = document.createElement('article');
         record_card.className = 'record-card';
@@ -68,13 +69,10 @@ const init = async () => {
 
         const record_card_thumb = document.createElement('div');
         record_card_thumb.className = 'record-card__thumb';
-
-        const record_card_letter = document.createElement('span');
-        record_card_letter.className = 'record-card__letter';
-        record_card_letter.textContent = 'R';
+        record_card_thumb.style.backgroundImage = `url('${wanted.poster}')`;
 
         const record_card_badge = document.createElement('span');
-        record_card_badge.className = 'badge-type badge-type--filme';
+        record_card_badge.className = `badge-type badge-type--${tipo}`;
         record_card_badge.textContent = tipo;
 
         const record_card_body = document.createElement('div');
@@ -89,7 +87,7 @@ const init = async () => {
 
         const meta_date = document.createElement('span');
         meta_date.className = 'meta-date';
-        meta_date.textContent = wanted.data_lanc;
+        meta_date.textContent = wanted.data_assistido.toString().slice(0, 10);
 
         const meta_score = document.createElement('span');
         meta_score.className = 'meta-score';
@@ -111,7 +109,6 @@ const init = async () => {
         record_card_body.appendChild(record_card_meta);
         record_card_body.appendChild(record_card_comment);
 
-        record_card_thumb.appendChild(record_card_letter);
         record_card_thumb.appendChild(record_card_badge);
 
         record_card.appendChild(record_card_tape);

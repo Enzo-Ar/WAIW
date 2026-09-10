@@ -1,5 +1,4 @@
-import { query, end } from '../config/db.js';
-const dirname = import.meta.dirname;
+import { query, connect, end } from '../config/db.js';
 
 export const getData = async (req, res) => {
     const tipo = req.params.tipo;
@@ -12,8 +11,6 @@ export const getData = async (req, res) => {
         } catch(err) {
             console.error(err);
             res.sendStatus(500);
-        } finally {
-            await end();
         }
     } else {
         res.sendStatus(404);
