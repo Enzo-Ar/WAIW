@@ -584,6 +584,184 @@ a {
 }
 
 /* ==========================================================================
+   Página de mídia individual — poster, ficha e comentário
+   ========================================================================== */
+ 
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  text-decoration: none;
+  border-bottom: 1.5px solid transparent;
+  margin-bottom: 1.1rem;
+}
+ 
+.back-link:hover {
+  border-bottom-color: var(--color-accent);
+}
+ 
+.media-header {
+  padding: 2.5rem 0 1rem;
+}
+ 
+.media-poster {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background-color: var(--color-ink);
+  background-image: radial-gradient(var(--color-paper) 1px, transparent 1.4px);
+  background-size: 9px 9px;
+  border: var(--border);
+  box-shadow: var(--shadow-hard);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(0 0, 94% 0, 100% 6%, 100% 100%, 6% 100%, 0 94%);
+}
+ 
+.media-poster--serie {
+  background-color: var(--color-accent-2);
+  background-image: radial-gradient(var(--color-ink) 1px, transparent 1.4px);
+}
+ 
+.media-poster--desenho {
+  background-color: var(--color-paper-soft);
+  background-image: radial-gradient(var(--color-ink) 1px, transparent 1.4px);
+}
+ 
+.media-poster__letter {
+  font-family: var(--font-display);
+  font-size: 7rem;
+  color: var(--color-paper);
+}
+ 
+.media-poster--serie .media-poster__letter,
+.media-poster--desenho .media-poster__letter {
+  color: var(--color-ink);
+}
+ 
+.media-poster__tape {
+  position: absolute;
+  top: -14px;
+  left: 30px;
+  width: 80px;
+  height: 24px;
+  background: var(--color-tape);
+  border: 1.5px solid var(--color-ink);
+  transform: rotate(-5deg);
+  z-index: 2;
+}
+ 
+.media-badge {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  border: 1.5px solid var(--color-ink);
+  transform: rotate(3deg);
+}
+ 
+.media-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  margin-bottom: 0.6rem;
+}
+ 
+.media-title {
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  line-height: 0.95;
+  margin-bottom: 1.2rem;
+}
+ 
+.media-score {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  background: var(--color-ink);
+  color: var(--color-accent-2);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 2rem;
+  padding: 0.4rem 0.9rem;
+  margin-bottom: 1.4rem;
+}
+ 
+.media-score small {
+  color: var(--color-paper);
+  font-weight: 400;
+  font-size: 1rem;
+}
+ 
+.media-tags {
+  margin-bottom: 1.6rem;
+}
+ 
+.ficha {
+  border: var(--border);
+  background: var(--color-paper-soft);
+  box-shadow: var(--shadow-hard-sm);
+  padding: 1.2rem 1.4rem;
+}
+ 
+.ficha dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1.2rem;
+  margin: 0;
+}
+ 
+.ficha dt {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+ 
+.ficha dd {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  margin: 0;
+  color: var(--color-ink);
+}
+ 
+.review-section {
+  padding: 1.5rem 0 4rem;
+}
+ 
+.review-block {
+  position: relative;
+  background: var(--color-paper-soft);
+  border: var(--border);
+  border-left-width: 8px;
+  box-shadow: var(--shadow-hard);
+  padding: 2.2rem 2rem;
+}
+ 
+.review-block__quote {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--color-accent);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+ 
+.review-block__text {
+  font-size: 1.15rem;
+  color: var(--color-ink);
+  max-width: 70ch;
+  margin: 0;
+}
+
+/* ==========================================================================
    Responsivo
    ========================================================================== */
 

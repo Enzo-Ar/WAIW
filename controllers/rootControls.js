@@ -1,5 +1,4 @@
 import * as path from 'path';
-import { query, end } from '../config/db.js';
 const dirname = import.meta.dirname;
 
 export const indexFunc = (req, res) => {
@@ -17,4 +16,8 @@ export const catFunc = async (req, res) => {
     //     await end();
     // }
     res.status(200).sendFile(path.join(dirname, '..', "views", 'categoria.html'));  
+};
+
+export const midiaFunc = (req, res) => {
+    res.status(200).sendFile(path.join(dirname, '..', "views", 'midia.html'));
 };

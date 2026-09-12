@@ -48,13 +48,15 @@ const init = async () => {
     </div> */
 
     console.log(data);
-    const aaa = "https://http2.mlstatic.com/D_NQ_NP_618685-CBT93673694347_092025-O.webp";
 
     const founder = document.querySelector('#founder');
     founder.textContent = data.length;
 
+
     data.forEach(wanted => {
         const wanted_lister = document.querySelector('#wanted-lister');
+        const link_card = document.createElement('a');
+        link_card.href = `/midia?tipo=${tipo}&id=${wanted.id}`;
 
         //creating wanted card
         const card = document.createElement('div');
@@ -117,6 +119,8 @@ const init = async () => {
         
         card.appendChild(record_card);
 
-        wanted_lister.appendChild(card);
+        link_card.appendChild(card);
+
+        wanted_lister.appendChild(link_card);
     });
 }
