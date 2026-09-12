@@ -20,7 +20,7 @@ app.use('/', (req, res, next) => {
     } else {
         next();
     }
-})
+});
 
 app.use('/', rootRouter);
 app.use('/api', apiRouter);

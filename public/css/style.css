@@ -355,28 +355,9 @@ a {
   box-shadow: inset 0 0 5em 1em #000;
   background-repeat: no-repeat;
   background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: var(--border);
   clip-path: polygon(
     0 0, 92% 0, 100% 8%, 100% 100%, 8% 100%, 0 92%
   );
-}
-
-.record-card__thumb--alt {
-  background-color: var(--color-accent-2);
-  background-image: radial-gradient(var(--color-ink) 1px, transparent 1.4px);
-}
-
-.record-card__letter {
-  font-family: var(--font-display);
-  font-size: 3.4rem;
-  color: var(--color-paper);
-}
-
-.record-card__thumb--alt .record-card__letter {
-  color: var(--color-ink);
 }
 
 .badge-type {
@@ -610,42 +591,18 @@ a {
  
 .media-poster {
   position: relative;
-  aspect-ratio: 3 / 4;
-  background-color: var(--color-ink);
-  background-image: radial-gradient(var(--color-paper) 1px, transparent 1.4px);
-  background-size: 9px 9px;
-  border: var(--border);
-  box-shadow: var(--shadow-hard);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  clip-path: polygon(0 0, 94% 0, 100% 6%, 100% 100%, 6% 100%, 0 94%);
-}
- 
-.media-poster--serie {
-  background-color: var(--color-accent-2);
-  background-image: radial-gradient(var(--color-ink) 1px, transparent 1.4px);
-}
- 
-.media-poster--desenho {
-  background-color: var(--color-paper-soft);
-  background-image: radial-gradient(var(--color-ink) 1px, transparent 1.4px);
-}
- 
-.media-poster__letter {
-  font-family: var(--font-display);
-  font-size: 7rem;
-  color: var(--color-paper);
-}
- 
-.media-poster--serie .media-poster__letter,
-.media-poster--desenho .media-poster__letter {
-  color: var(--color-ink);
+  aspect-ratio: 2 / 3;
+  box-shadow: inset 0 0 5em 1em #000;
+  background-repeat: no-repeat;
+  background-size: cover;
+  clip-path: polygon(
+    0 0, 92% 0, 100% 8%, 100% 100%, 8% 100%, 0 92%
+  );
 }
  
 .media-poster__tape {
   position: absolute;
-  top: -14px;
+  top: -4px;
   left: 30px;
   width: 80px;
   height: 24px;

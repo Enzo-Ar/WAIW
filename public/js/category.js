@@ -46,12 +46,8 @@ const init = async () => {
             </div>
         </article>
     </div> */
-
-    console.log(data);
-
     const founder = document.querySelector('#founder');
     founder.textContent = data.length;
-
 
     data.forEach(wanted => {
         const wanted_lister = document.querySelector('#wanted-lister');

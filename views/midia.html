@@ -50,16 +50,16 @@
 
       <!-- BACKEND: "voltar" deve linkar pra categoria de origem (com o mesmo tipo desta mídia) -->
       <div class="pt-4">
-        <a class="back-link" href="categoria.html?tipo=filme">&larr; Voltar para Filmes</a>
+        <a class="back-link" id="back-link"></a>
       </div>
 
       <!-- BACKEND: trilha conforme tipo + título da mídia carregada pelo id -->
       <ul class="breadcrumb-row">
         <li><a href="index.html">Início</a></li>
         <li class="breadcrumb-sep">/</li>
-        <li><a href="categoria.html?tipo=filme">Filmes</a></li>
+        <li><a id="type-breadcrumb"></a></li>
         <li class="breadcrumb-sep">/</li>
-        <li class="is-current">Rampa Vazia</li>
+        <li class="is-current" id="isCurr"></li>
       </ul>
     </div>
 
@@ -73,45 +73,40 @@
     <section class="media-header">
       <div class="container">
         <div class="row g-4">
-
           <div class="col-lg-4">
-            <div class="media-poster">
+            <div class="position-relative">
               <span class="media-poster__tape" aria-hidden="true"></span>
-              <span class="media-poster__letter">R</span>
-              <span class="media-badge badge-type--filme">Filme</span>
+              <div class="media-poster" id="poster">
+                <span id="badge"></span>
+              </div>
             </div>
           </div>
 
           <div class="col-lg-8">
-            <p class="media-kicker">Assistido em 12/03/2024</p>
-            <h1 class="media-title">Rampa Vazia</h1>
+            <p class="media-kicker"></p>
+            <h1 class="media-title" id="big-title"></h1>
 
-            <div class="media-score">
-              8.7<small>/10</small>
+            <div class="media-score" id="big-nota">
+              <small>/5</small>
             </div>
 
-            <ul class="tag-row media-tags">
-              <li class="tag">Skate</li>
-              <li class="tag">Drama</li>
+            <ul class="tag-row media-tags" id="category-lister">
             </ul>
 
             <!-- BACKEND: ficha com os campos principais do registro -->
             <div class="ficha">
               <dl>
                 <dt>Título</dt>
-                <dd>Rampa Vazia</dd>
+                <dd id="small-title"></dd>
 
                 <dt>Tipo</dt>
-                <dd>Filme</dd>
+                <dd id="type">Filme</dd>
 
-                <dt>Categoria</dt>
-                <dd>Skate, Drama</dd>
-
-                <dt>Assistido em</dt>
-                <dd>12/03/2024</dd>
+                <dt>Lançado em:</dt>
+                <dd id="date"></dd>
 
                 <dt>Nota</dt>
-                <dd>8.7 / 10</dd>
+                <dd id="small-nota"></dd>
               </dl>
             </div>
           </div>
@@ -130,10 +125,7 @@
             <!-- BACKEND: texto completo do comentário salvo para esse registro -->
             <div class="review-block">
               <span class="review-block__quote" aria-hidden="true">"</span>
-              <p class="review-block__text">
-                Um filme sobre andar de skate sozinho à noite. A trilha sonora carrega o filme inteiro,
-                e tem uma cena no meio que fica na cabeça por dias. Não é perfeito, mas é sincero — e isso
-                já é mais do que a maioria consegue entregar.
+              <p class="review-block__text" id="review_text">
               </p>
             </div>
           </div>
