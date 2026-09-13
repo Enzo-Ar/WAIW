@@ -23,6 +23,7 @@ const init = async () => {
         subtitle.textContent = "Desenho animado é muito bom slk";
     }
 
+    //A FAZER: CHECAR STATUS CODE PARA GARANTIR 200, SE NÃO, MUDAR PAGINA DE ACORDO
     const url = `http://localhost:8080/api/${tipo}`;
     const response = await fetch(url);
     console.log(response);
@@ -112,11 +113,10 @@ const init = async () => {
         record_card.appendChild(record_card_tape);
         record_card.appendChild(record_card_thumb);
         record_card.appendChild(record_card_body);
-        
-        card.appendChild(record_card);
 
-        link_card.appendChild(card);
+        link_card.appendChild(record_card)
+        card.appendChild(link_card);
 
-        wanted_lister.appendChild(link_card);
+        wanted_lister.appendChild(card);
     });
 }
