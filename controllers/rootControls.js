@@ -1,4 +1,5 @@
 import * as path from 'path';
+import { login } from '../model/apiModel.js';
 const dirname = import.meta.dirname;
 
 export const indexFunc = (req, res) => {
@@ -15,9 +16,9 @@ export const midiaFunc = (req, res) => {
 
 export const loginviewFunc = (req, res) => {
     res.status(200).sendFile(path.join(dirname, '..', "views", 'login.html'));
-}
+};
 
-export const loginpostFunc = (req, res) => {
-    console.log(req.body.email);
-    console.log(req.body.senha);
-}
+export const loginpostFunc = async (req, res) => {
+    const r = await login(req.body.email, req.body.senha);
+    res.send(r);
+};

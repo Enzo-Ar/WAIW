@@ -67,3 +67,7 @@ export const getById = async (tipo, id) => {
         }
     }
 };
+
+export const login = async (email, pssw) => {
+    return `${email}, ${pssw}`;
+};

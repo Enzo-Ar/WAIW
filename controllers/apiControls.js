@@ -1,4 +1,4 @@
-import { getAll, getById } from "../model/apiModel.js";
+import { getAll, getById, login } from "../model/apiModel.js";
 import ParamsError from '../exceptions/ParamsError.js';
 import NotFoundError from '../exceptions/NotFoundError.js';
 import QueryError from '../exceptions/QueryError.js';
