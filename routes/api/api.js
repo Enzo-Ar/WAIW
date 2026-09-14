@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { getData, getSingular } from '../../controllers/apiControls.js';
+import { getData, getSingular, postRegisterUser, postLoginUser } from '../../controllers/apiControls.js';
 const router = express.Router();
 
 router.route('/:tipo')
@@ -7,5 +7,11 @@ router.route('/:tipo')
 
 router.route('/:tipo/:id')
     .get(getSingular);
+
+router.route('/registerUser')
+    .post(postRegisterUser);
+
+router.route('/loginUser')
+    .post(postLoginUser);
 
 export default router;

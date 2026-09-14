@@ -2,6 +2,8 @@ import { query } from '../config/db.js';
 import ParamsError from '../exceptions/ParamsError.js';
 import NotFoundError from '../exceptions/NotFoundError.js';
 import QueryError from '../exceptions/QueryError.js';
+import RequestError from '../exceptions/RequestError.js';
+import * as bcrypt from 'bcrypt';
 
 export const getAll = async (tipo) => {
     const queryStr = tipo === "filmes" ? 'SELECT * FROM filmes;' : tipo === "series" ? 'SELECT * FROM series;' : tipo === "cartoons" ? "SELECT * FROM cartoons;" : null;
@@ -62,14 +64,34 @@ export const getById = async (tipo, id) => {
         } catch(err) {
             if(err instanceof NotFoundError) {
                 throw err;
-            } 
+            }
             throw new QueryError("Falha na Query", err);
         }
     }
 };
 
-export const signup = async (email, pssw, global) => {
-    
+export const signup = async (username, email, pssw) => {
+    if (!username || !email || !pssw) {
+        throw new ParamsError("Username, Email ou Senha invalidos");
+    }
+
+    try {
+        const duplicate = await query("SELECT * FROM users WHERE email = $1", [email]);
+
+        if (duplicate.rows.length !== 0) {
+            throw new RequestError("Email do usuario já está em uso");
+        }
+
+        const hashedpssw = await bcrypt.hash(pssw, 10);
+        const role = "visitante";
+        await query("INSERT INTO users(username, email, pssw, role) VALUES($1, $2, $3, $4);", [username, email, hashedpssw, role]);
+
+    } catch(err) {
+        if (err instanceof RequestError) {
+            throw err;
+        }
+        throw new QueryError("Falha na Query", err);
+    }
 }
 
 export const login = async (email, pssw) => {

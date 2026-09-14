@@ -53,21 +53,21 @@
             <span class="entry-card__tape" aria-hidden="true"></span>
             <h1 class="entry-card__title">Signup</h1>
 
-            <form action="#" method="post" id="singup">
+            <form id="signup">
               <div class="row g-3">
                 <div class="col-12">
+                  <label for="username" class="form-label">Username</label>
+                  <input type="text" class="form-control field" id="username" name="username" placeholder="EX:username123" required>
+                </div>
+
+                <div class="col-12">
                   <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control field" id="email" name="email" placeholder="voce@email.com" required>
+                  <input type="email" class="form-control field" id="email" name="email" placeholder="EX:voce@email.com" required>
                 </div>
 
                 <div class="col-12">
                   <label for="senha" class="form-label">Senha</label>
                   <input type="password" class="form-control field" id="senha" name="senha" placeholder="••••••••" required>
-                </div>
-
-                <div class="col-12">
-                  <label for="senhaGlobal" class="form-label">Senha Global(ADM)</label>
-                  <input type="password" class="form-control field" id="senhaGlobal" name="senhaGlobal" placeholder="••••••••" required>
                 </div>
 
                 <div class="col-12">
@@ -97,5 +97,6 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/signup.js"></script>
 </body>
 </html>
