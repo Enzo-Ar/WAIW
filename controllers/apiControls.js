@@ -61,6 +61,19 @@ export const postRegisterUser = async (req, res) => {
 
 
 export const postLoginUser = async (req, res) => {
-    const r = await login(req.body.email, req.body.senha);
-    res.send(r);
+    try {
+        const logged = await login(req.body.email, req.body.senha);
+        res.status(200).json({"logged": logged});
+    } catch(err) {
+        if (err instanceof ParamsError) {
+            console.log(err);
+            res.status(400).json({"erro": "ParamsError"});
+        } else if (err instanceof RequestError) {
+            console.log(err)
+            res.status(401).json({"erro": "NoAuth"});
+        } else if (err instanceof QueryError) {
+            console.log(err);
+            res.status(500).json({"erro": "ServerSide"});
+        }
+    }
 };

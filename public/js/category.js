@@ -9,6 +9,18 @@ const init = async () => {
     const params = new URLSearchParams(urlQuery);
     const tipo = params.get('tipo');
 
+    const navList = document.querySelector('#navList');
+    const log_sign = document.createElement('li');
+    log_sign.className = 'nav-item';
+
+    const log_sign_href = document.createElement('a');
+    log_sign_href.className = 'nav-link';
+    log_sign_href.href = '/login';
+    log_sign_href.textContent = 'login';
+
+    log_sign.appendChild(log_sign_href);
+    navList.appendChild(log_sign);
+
     const title = document.querySelector('.hero-title');
     const is_curr = document.querySelector('.is-current');
     const subtitle = document.querySelector('.hero-subtitle');

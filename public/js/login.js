@@ -21,7 +21,7 @@ const init = async () => {
         });
 
         if (result.ok) {
-            window.location.replace("../../views/index");
+            console.log('foi loggado');
         } else {
             const r = await result.json();
             // if (r.erro === "ExistsUser") {
