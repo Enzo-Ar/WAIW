@@ -104,11 +104,9 @@ export const login = async (email, pssw) => {
         const checkUser = await query("SELECT * FROM users WHERE email = $1", [email]);
 
         if (checkUser.rows.length === 0) {
-            throw new RequestError("Usuario Inexistente");
+            throw new NotFoundError("Usuario Inexistente");
         }
-        console.log(email, pssw, checkUser.rows[0].pssw);
         const match = await bcrypt.compare(pssw, checkUser.rows[0].pssw);
-        console.log(match);
         if (match) {
             //creation of JWT
             return match;
@@ -116,7 +114,7 @@ export const login = async (email, pssw) => {
             throw new RequestError("Senha Errada, Sem Autorização para entrar");
         }
     } catch(err) {
-        if (err instanceof RequestError) {
+        if (err instanceof RequestError || err instanceof NotFoundError) {
             throw err;
         }
         throw new QueryError("Falha na Query", err);

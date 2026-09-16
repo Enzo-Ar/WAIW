@@ -16,4 +16,4 @@ const init = async () => {
 
     log_sign.appendChild(log_sign_href);
     navList.appendChild(log_sign);
-}
+};

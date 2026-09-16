@@ -4,6 +4,8 @@ import * as path from 'path';
 
 import rootRouter from './routes/root.js';
 import apiRouter from './routes/api/api.js';
+import registerRouter from './routes/api/register.js';
+import authRouter from './routes/api/auth.js';
 
 const PORT = process.env.PORT || 8080;
 const app = exApp();
@@ -23,6 +25,8 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/', rootRouter);
+app.use('/register', registerRouter);
+app.use('/login', authRouter);
 app.use('/api', apiRouter);
 
 app.listen(PORT, (err) => {
