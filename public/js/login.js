@@ -35,24 +35,22 @@ const init = async () => {
             error_div.className = 'col-12 error-div';
 
             const error_msg = document.createElement('p');
-            const error_accent = document.createElement('b');
 
             switch (r.erro) {
                 case "ParamsError":
-                    error_accent.textContent = 'Todos os parâmetros são obrigatórios.';
+                    error_msg.textContent = 'Todos os parâmetros são obrigatórios.';
                     break;
                 case "NoUser":
-                    error_accent.textContent = 'Usuario inexistente. Crie uma conta.';
+                    error_msg.textContent = 'Usuario inexistente. Crie uma conta.';
                     break;
                 case "NoAuth":
-                    error_accent.textContent = 'Email ou Senha estão errados.';
+                    error_msg.textContent = 'Email ou Senha estão errados.';
                     break;
                 default:
-                    error_accent.textContent = 'Server error, Login não efetuado.'
+                    error_msg.textContent = 'Server error, Login não efetuado.'
                     break;
             }
 
-            error_msg.appendChild(error_accent);
             error_div.appendChild(error_msg);
 
             senha_camp.insertAdjacentElement("afterend", error_div);

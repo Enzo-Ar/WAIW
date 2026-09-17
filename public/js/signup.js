@@ -36,24 +36,22 @@ const init = async () => {
             error_div.className = 'col-12 error-div';
 
             const error_msg = document.createElement('p');
-            const error_accent = document.createElement('b');
 
             let pos_decider;
 
             switch (r.erro) {
                 case "ParamsError":
-                    error_accent.textContent = 'Todos os parâmetros são obrigatórios.';
+                    error_msg.textContent = 'Todos os parâmetros são obrigatórios.';
                     break;
                 case "ExistsUser":
-                    error_accent.textContent = 'Já existe um usuário com esse Email.';
+                    error_msg.textContent = 'Já existe um usuário com esse Email.';
                     pos_decider = 1; //um é para colocar abaixo do email
                     break;
                 default:
-                    error_accent.textContent = 'Server error, Login não efetuado.'
+                    error_msg.textContent = 'Server error, Login não efetuado.'
                     break;
             }
 
-            error_msg.appendChild(error_accent);
             error_div.appendChild(error_msg);
 
             switch (pos_decider) {
