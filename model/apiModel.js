@@ -3,7 +3,12 @@ import ParamsError from '../exceptions/ParamsError.js';
 import NotFoundError from '../exceptions/NotFoundError.js';
 import QueryError from '../exceptions/QueryError.js';
 import RequestError from '../exceptions/RequestError.js';
+
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
+import {v4 as uuidv4} from 'uuid';
+import { addDays } from 'date-fns';
+import 'dotenv/config';
 
 export const getAll = async (tipo) => {
     const queryStr = tipo === "filmes" ? 'SELECT * FROM filmes;' : tipo === "series" ? 'SELECT * FROM series;' : tipo === "cartoons" ? "SELECT * FROM cartoons;" : null;
@@ -109,7 +114,26 @@ export const login = async (email, pssw) => {
         const match = await bcrypt.compare(pssw, checkUser.rows[0].pssw);
         if (match) {
             //creation of JWT
-            return match;
+            const acessToken = jwt.sign(
+                {userID: checkUser.rows[0].id, username: checkUser.rows[0].username, role: checkUser.rows[0].role},
+                process.env.ACESS_TOKEN_SECRET,
+                {
+                    expiresIn: '15m'
+                }
+            );
+            // const refreshToken = jwt.sign(
+            //     {userID: checkUser.rows[0].id},
+            //     process.env.REFRESH_TOKEN_SECRET,
+            //     {
+            //         expiresIn: '7d'
+            //     }
+            // );
+            const createdAt = new Date();
+            const expireAt = addDays(createdAt, 30);
+
+            const paramsRefresh = [uuidv4(), checkUser.rows[0].id, , false, createdAt, expireAt];
+            await query("INSERT INTO jwt_refresh VALUES ($1, $2, $3, $4, $5, $6)", paramsRefresh);
+            return acessToken;
         } else {
             throw new RequestError("Senha Errada, Sem Autorização para entrar");
         }
