@@ -20,12 +20,14 @@ function decodificarJWT(token) {
 }
 
 const init = async () => {
-    let nav_control;
+    let nav_control = 3;
 
     //checando para autorização e autenticação
     const response = await fetch('/refresh', {method: 'POST'});
-    const data = await response.json();
+
     if (response.ok) {
+        const data = await response.json();
+
         const token = data.accessToken;
         const userData = decodificarJWT(token);
         
@@ -34,13 +36,9 @@ const init = async () => {
         } else {
             nav_control = 2;
         }
-    } else {
-        if (response.status === 401) {
-            nav_control = 3;
-        }
     }
-
-    if (nav_control === 1 || nav_control === 3) {
+    
+    if (nav_control === 1) {
         const navList = document.querySelector('#navList');
         const log_sign = document.createElement('li');
         log_sign.className = 'nav-item';
@@ -48,20 +46,38 @@ const init = async () => {
         const log_sign_href = document.createElement('a');
         log_sign_href.className = 'nav-link';
 
-        switch (nav_control) {
-            case 1:
-                log_sign_href.href = '/registro';
-                log_sign_href.textContent = 'registro';
-                break;
-            case 3:
-                log_sign_href.href = '/login';
-                log_sign_href.textContent = 'login';
-            default:
-                log_sign_href.href = '/login';
-                log_sign_href.textContent = 'login';
-                break;
-        }
+        log_sign_href.href = '/registro';
+        log_sign_href.textContent = 'Registro';
+
         log_sign.appendChild(log_sign_href);
         navList.appendChild(log_sign);
+    }
+    
+    
+    if (nav_control === 1 || nav_control === 2) {
+        const log_out = document.createElement('li');
+        log_out.className = 'nav-item';
+
+        const log_out_href = document.createElement('a');
+        log_out_href.className = 'nav-link';
+        log_out_href.href = '/logout';
+        log_out_href.textContent = 'Logout';
+
+        log_out.appendChild(log_out_href);
+        navList.appendChild(log_out);
+    } else {
+        const navList = document.querySelector('#navList');
+        const log_sign = document.createElement('li');
+        log_sign.className = 'nav-item';
+
+        const log_sign_href = document.createElement('a');
+        log_sign_href.className = 'nav-link';
+
+        log_sign_href.href = '/login';
+        log_sign_href.textContent = 'Login';
+
+        log_sign.appendChild(log_sign_href);
+        navList.appendChild(log_sign);
+        
     }
 };

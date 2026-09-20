@@ -73,28 +73,7 @@ export const getById = async (tipo, id) => {
 };
 
 export const signup = async (username, email, pssw) => {
-    if (!username || !email || !pssw) {
-        throw new ParamsError("Email ou Senha são obrigatorios");
-    }
-
-    try {
-        const duplicate = await query("SELECT * FROM users WHERE email = $1", [email]);
-
-        if (duplicate.rows.length !== 0) {
-            throw new RequestError("Email do usuario já está em uso");
-        }
-
-        const hashedpssw = await bcrypt.hash(pssw, 10);
-        const role = "visitante";
-        const ret = await query("INSERT INTO users(username, email, pssw, role) VALUES($1, $2, $3, $4) RETURNING id;", [username, email, hashedpssw, role]);
-
-        console.log(`user created with id: ${ret}`);
-    } catch(err) {
-        if (err instanceof RequestError) {
-            throw err;
-        }
-        throw new QueryError("Falha na Query", err);
-    }
+    
 }
 
 // export const login = async (email, pssw) => {
@@ -108,9 +87,26 @@ export const signup = async (username, email, pssw) => {
 //     }
 // };
 
-export const getUser = async (email, pssw) => {
-    if (!email || !pssw) {
-        throw new ParamsError("Email ou Senha são obrigatorios");
+export const insertUser = async (username, email, pssw) => {
+    if (!username || !email || !pssw) {
+        throw new ParamsError("Email, Senha e Username são obrigatorios");
+    }
+
+    try {
+        const hashedpssw = await bcrypt.hash(pssw, 10);
+        const role = "visitante";
+        await query("INSERT INTO users(username, email, pssw, role) VALUES($1, $2, $3, $4);", [username, email, hashedpssw, role]);
+    } catch(err) {
+        if (err instanceof RequestError) {
+            throw err;
+        }
+        throw new QueryError("Falha na Query", err);
+    }
+}
+
+export const getUser = async (email) => {
+    if (!email) {
+        throw new ParamsError("Email é obrigatorio para buscar usuario");
     }
 
     try {
@@ -125,6 +121,17 @@ export const getUser = async (email, pssw) => {
         if (err instanceof NotFoundError) {
             throw err;
         }
+        throw new QueryError("Falha na Query", err);
+    }
+}
+
+export const getRows = async (email) => {
+    if (!email) throw new ParamsError("Email é obrigatorio para buscar rows");
+
+    try {
+        const result = await query("SELECT * FROM users WHERE email = $1", [email]);
+        return result;
+    } catch(err) {
         throw new QueryError("Falha na Query", err);
     }
 }

@@ -8,14 +8,13 @@ import { createAccess, createRefresh } from "../helpers/createToken.js";
 
 import * as bcrypt from 'bcrypt';
 import { addDays } from 'date-fns';
-import jwt from "jsonwebtoken";
 
 export const postLoginUser = async (req, res) => {
     try {
         const email = req.body.email;
         const pssw = req.body.senha;
 
-        const user = await getUser(email, pssw);
+        const user = await getUser(email);
         const match = await bcrypt.compare(pssw, user.pssw);
         if (match) {
             //creation of JWT
