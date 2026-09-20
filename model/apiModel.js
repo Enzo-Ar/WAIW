@@ -16,15 +16,14 @@ export const getAll = async (tipo) => {
         try {
             const result = await query(queryStr);
             if (result.rows.length === 0) {
-                throw new NotFoundError("Falha na busca, resultado talvex inexistente", err);
+                throw new NotFoundError("Falha na busca, resultado talvex inexistente");
             }
             return result.rows;
         } catch(err) {
             if(err instanceof NotFoundError) {
                 throw err;
-            } else {
-                throw new QueryError("Falha na Query", err);
-            }
+            } 
+            throw new QueryError("Falha na Query", err);
         }
     }
 };
@@ -167,6 +166,18 @@ export const getRefresh = async (hashedToken) => {
             throw err
         }
         console.log(err);
+        throw new QueryError("Falha na Query", err);
+    }
+}
+
+export const deleteRefresh = async (hashedToken) => {
+    if (!hashedToken) {
+        throw new ParamsError("Nenhum Token passado");
+    }
+
+    try{
+        await query('DELETE FROM jwt_refresh WHERE token_hash = $1', [hashedToken]);
+    } catch(err) {
         throw new QueryError("Falha na Query", err);
     }
 }

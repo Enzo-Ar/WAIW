@@ -36,10 +36,12 @@ const init = async () => {
         } else {
             nav_control = 2;
         }
-    }
+    }   
+
+    const navList = document.querySelector('#navList');
     
     if (nav_control === 1) {
-        const navList = document.querySelector('#navList');
+        
         const log_sign = document.createElement('li');
         log_sign.className = 'nav-item';
 
@@ -60,13 +62,16 @@ const init = async () => {
 
         const log_out_href = document.createElement('a');
         log_out_href.className = 'nav-link';
-        log_out_href.href = '/logout';
         log_out_href.textContent = 'Logout';
 
         log_out.appendChild(log_out_href);
         navList.appendChild(log_out);
+
+        log_out.addEventListener('click', async (event) => {
+            await fetch('/logout', {method: 'POST'});
+            location.reload()
+        })
     } else {
-        const navList = document.querySelector('#navList');
         const log_sign = document.createElement('li');
         log_sign.className = 'nav-item';
 
