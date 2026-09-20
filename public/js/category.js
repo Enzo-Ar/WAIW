@@ -36,7 +36,7 @@ const init = async () => {
     }
 
     //A FAZER: CHECAR STATUS CODE PARA GARANTIR 200, SE NÃO, MUDAR PAGINA DE ACORDO
-    const url = `http://localhost:8080/api/${tipo}`;
+    const url = `/api/${tipo}`;
     const response = await fetch(url);
     console.log(response);
     const data = await response.json();

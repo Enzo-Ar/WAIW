@@ -24,3 +24,7 @@ export const signviewFunc = (req, res) => {
 export const loginviewFunc = (req, res) => {
     res.status(200).sendFile(path.join(dirname, '..', "views", 'login.html'));
 };
+
+export const registroFunc = (req, res) => {
+    res.status(200).sendFile(path.join(dirname, '..', "views", 'registro.html'));
+}

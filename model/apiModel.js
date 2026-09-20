@@ -5,9 +5,6 @@ import QueryError from '../exceptions/QueryError.js';
 import RequestError from '../exceptions/RequestError.js';
 
 import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
-import {v4 as uuidv4} from 'uuid';
-import { addDays } from 'date-fns';
 import 'dotenv/config';
 
 export const getAll = async (tipo) => {
@@ -100,47 +97,69 @@ export const signup = async (username, email, pssw) => {
     }
 }
 
-export const login = async (email, pssw) => {
+// export const login = async (email, pssw) => {
+//     try {
+        
+//     } catch(err) {
+//         if (err instanceof RequestError || err instanceof NotFoundError) {
+//             throw err;
+//         }
+//         throw new QueryError("Falha na Query", err);
+//     }
+// };
+
+export const getUser = async (email, pssw) => {
     if (!email || !pssw) {
         throw new ParamsError("Email ou Senha são obrigatorios");
     }
 
     try {
-        const checkUser = await query("SELECT * FROM users WHERE email = $1", [email]);
+        const user = await query("SELECT * FROM users WHERE email = $1", [email]);
 
-        if (checkUser.rows.length === 0) {
+        if (user.rows.length === 0) {
             throw new NotFoundError("Usuario Inexistente");
         }
-        const match = await bcrypt.compare(pssw, checkUser.rows[0].pssw);
-        if (match) {
-            //creation of JWT
-            const acessToken = jwt.sign(
-                {userID: checkUser.rows[0].id, username: checkUser.rows[0].username, role: checkUser.rows[0].role},
-                process.env.ACESS_TOKEN_SECRET,
-                {
-                    expiresIn: '15m'
-                }
-            );
-            // const refreshToken = jwt.sign(
-            //     {userID: checkUser.rows[0].id},
-            //     process.env.REFRESH_TOKEN_SECRET,
-            //     {
-            //         expiresIn: '7d'
-            //     }
-            // );
-            const createdAt = new Date();
-            const expireAt = addDays(createdAt, 30);
 
-            const paramsRefresh = [uuidv4(), checkUser.rows[0].id, , false, createdAt, expireAt];
-            await query("INSERT INTO jwt_refresh VALUES ($1, $2, $3, $4, $5, $6)", paramsRefresh);
-            return acessToken;
-        } else {
-            throw new RequestError("Senha Errada, Sem Autorização para entrar");
-        }
+        return user.rows[0];
     } catch(err) {
-        if (err instanceof RequestError || err instanceof NotFoundError) {
+        if (err instanceof NotFoundError) {
             throw err;
         }
         throw new QueryError("Falha na Query", err);
     }
-};
+}
+
+export const insertRefresh = async (user_id, revoked, expireAt, createdAt, token_hash) => {
+    if ( !user_id || revoked === null || !expireAt || !createdAt || !token_hash) {
+        throw new ParamsError("Sem Dados o suficiente");
+    }
+
+    try {
+        const params = [user_id, revoked, expireAt, createdAt, token_hash];
+        await query("INSERT INTO jwt_refresh(user_id, revoked, expires, created, token_hash) VALUES ($1, $2, $3, $4, $5)", params);
+    } catch(err) {
+        throw new QueryError("Falha Query Insert", err);
+    }
+}
+
+export const getRefresh = async (hashedToken) => {
+    if (!hashedToken) {
+        throw new ParamsError("Nenhum Token passado");
+    }
+
+    try{
+        const result = await query('SELECT * FROM jwt_refresh WHERE token_hash = $1', [hashedToken]);
+
+        if (result.rows.length === 0) {
+            throw new NotFoundError("Token não existe");
+        }
+
+        return result.rows[0];
+    } catch(err) {
+        if (err instanceof NotFoundError) {
+            throw err
+        }
+        console.log(err);
+        throw new QueryError("Falha na Query", err);
+    }
+}

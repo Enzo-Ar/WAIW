@@ -12,7 +12,7 @@ const init = async () => {
     const id = params.get('id');
 
     //midia Part
-    const url = `http://localhost:8080/api/${tipo}/${id}`;
+    const url = `/api/${tipo}/${id}`;
     const response = await fetch(url);
     const fulldata = await response.json();
     const data = fulldata[0];
