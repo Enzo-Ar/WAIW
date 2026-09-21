@@ -9,7 +9,6 @@ import registerRouter from './routes/api/register.js';
 import authRouter from './routes/api/auth.js';
 import refreshRouter from './routes/api/refresh.js';
 import logoutRouter from './routes/api/logout.js';
-// import verifyJWT from './middleware/verifyJWT.js';
 
 const PORT = process.env.PORT || 8080;
 const app = exApp();

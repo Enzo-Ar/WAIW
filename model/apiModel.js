@@ -16,7 +16,7 @@ export const getAll = async (tipo) => {
         try {
             const result = await query(queryStr);
             if (result.rows.length === 0) {
-                throw new NotFoundError("Falha na busca, resultado talvex inexistente");
+                throw new NotFoundError("Falha na busca, resultado talvez inexistente");
             }
             return result.rows;
         } catch(err) {
