@@ -9,6 +9,8 @@ import registerRouter from './routes/api/register.js';
 import authRouter from './routes/api/auth.js';
 import refreshRouter from './routes/api/refresh.js';
 import logoutRouter from './routes/api/logout.js';
+import catalogueRouter from './routes/api/catalogue.js';
+import verifyJWT from './middleware/verifyJWT.js';
 
 const PORT = process.env.PORT || 8080;
 const app = exApp();
@@ -33,8 +35,9 @@ app.use('/register', registerRouter);
 app.use('/login', authRouter);
 app.use('/logout', logoutRouter);
 app.use('/refresh', refreshRouter);
-
 app.use('/api', apiRouter);
+
+app.use('/catalogue', catalogueRouter);
 
 app.listen(PORT, (err) => {
     if (err) throw err;

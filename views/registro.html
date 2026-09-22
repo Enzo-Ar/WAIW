@@ -53,20 +53,25 @@
               <span class="entry-card__tape" aria-hidden="true"></span>
               <h2 class="entry-card__title">Novo registro</h2>
 
-              <form action="#" method="post">
+              <form id="regForm">
                 <div class="row g-3">
                   <div class="col-12 col-md-7">
                     <label for="titulo" class="form-label">Título</label>
                     <input type="text" class="form-control field" id="titulo" name="titulo" placeholder="Nome do filme, série ou desenho">
                   </div>
 
-                  <div class="col-12 col-md-5">
-                    <label for="tipo" class="form-label">Tipo</label>
-                    <select class="form-select field" id="tipo" name="tipo">
-                      <option selected id="slc-filme">Filme</option>
-                      <option id="slc-serie">Série</option>
-                      <option id="slc-cartoon">Cartoon</option>
-                    </select>
+                  <div class="col-12 col-md-5 d-flex justify-content-between align-items-end">
+                    <span> 
+                      <label class="form-label"><input type="radio" name="slcs" id="slc-filme" value="filmes" class="form-check-input" checked>Filme</label>
+                    </span>
+                    
+                    <span>
+                      <label class="form-label"><input type="radio" name="slcs" id="slc-serie" value="series" class="form-check-input">Serie</label> 
+                    </span>
+                    
+                    <span>
+                      <label class="form-label"><input type="radio" name="slcs" id="slc-cartoon" value="cartoons" class="form-check-input">Cartoon</label>
+                    </span>
                   </div>
 
                   <div class="col-6 col-md-3">
@@ -84,7 +89,7 @@
                     <input type="text" class="form-control field" id="categoria" name="categoria" placeholder="Ex: comédia, ação, etc">
                   </div>
 
-                  <div class="col-12">
+                  <div class="col-12" id="comentario">
                     <label for="comentario" class="form-label">Comentário</label>
                     <textarea class="form-control field" id="comentario" name="comentario" rows="3" placeholder="Escreva aqui"></textarea>
                   </div>

@@ -71,20 +71,9 @@ export const getById = async (tipo, id) => {
     }
 };
 
-export const signup = async (username, email, pssw) => {
-    
+export const insertInCat = async (title, tipo, nota, temp, ep, data, comentario) => {
+    console.log(tipo);
 }
-
-// export const login = async (email, pssw) => {
-//     try {
-        
-//     } catch(err) {
-//         if (err instanceof RequestError || err instanceof NotFoundError) {
-//             throw err;
-//         }
-//         throw new QueryError("Falha na Query", err);
-//     }
-// };
 
 export const insertUser = async (username, email, pssw) => {
     if (!username || !email || !pssw) {
