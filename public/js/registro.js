@@ -50,6 +50,17 @@ const init = async () => {
         window.location.replace('/index');
     });
 
+    const CatSelect = document.querySelector('#categorias')
+    const genResult = await fetch('/catalogue/categorias');
+    const generos = await genResult.json();
+    generos.forEach(genero => {
+        const newOption = document.createElement('option');
+        newOption.value = genero.id;
+        newOption.textContent = genero.nome_gen;
+
+        CatSelect.appendChild(newOption);
+    })
+
     const slcs = document.querySelectorAll('input[type=radio]');
     const categoria = document.querySelector('#categoria');
 
@@ -118,14 +129,29 @@ const init = async () => {
         event.preventDefault();
 
         const formData = new FormData(event.target);
-        const data = Object.fromEntries(formData);
+
+        const titulo = formData.get('titulo');
+        const tipo = formData.get('tipo');
+        const nota = formData.get('nota');
+        const data = formData.get('data');
+        const categorias = formData.getAll('categorias');
+        const comentario = formData.get('comentario');
+
+        const objForm = {
+            titulo: titulo,
+            tipo: tipo,
+            nota: nota,
+            data: data,
+            categorias: categorias,
+            comentario: comentario
+        };
 
         const result = await fetch('/catalogue/insert', {
             method: 'POST',
             headers: {
                 'Content-Type': "application/json"
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(objForm)
         });
 
         if (!result.ok) {

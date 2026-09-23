@@ -72,7 +72,23 @@ export const getById = async (tipo, id) => {
 };
 
 export const insertInCat = async (title, tipo, nota, temp, ep, data, comentario) => {
-    console.log(tipo);
+    try {
+        let queryUrl;
+        let params;
+        if (tipo === "filmes") {
+            queryUrl = "INSERT INTO filmes(nome, data_assistido, nota, comentario) VALUES($1, $2, $3, $4)"
+            params = [title, data, nota, comentario];
+        } else if (tipo === "series") {
+
+        }
+        await query(queryUrl, params); //query para a tabela do tipo em si
+        //query para os generos do tipo
+    } catch(err) {
+        if (err instanceof RequestError) {
+            throw err;
+        }
+        throw new QueryError("Falha na Query", err);
+    }
 }
 
 export const insertUser = async (username, email, pssw) => {
@@ -168,5 +184,14 @@ export const deleteRefresh = async (hashedToken) => {
         await query('DELETE FROM jwt_refresh WHERE token_hash = $1', [hashedToken]);
     } catch(err) {
         throw new QueryError("Falha na Query", err);
+    }
+}
+
+export const getCate = async () => {
+    try {
+        const result = await query('SELECT * FROM generos');
+        return result.rows
+    } catch(err) {
+        throw new QueryError('Falha na Query', err);
     }
 }
