@@ -63,6 +63,7 @@ const init = async () => {
 
     const slcs = document.querySelectorAll('input[type=radio]');
     const categoria = document.querySelector('#categoria');
+    const comentario = document.querySelector('#comentario');
 
     slcs.forEach(slc => {
         slc.addEventListener('change', (event) => {
@@ -72,13 +73,18 @@ const init = async () => {
                     checkEP.remove();
                 }
 
-                const checkBefore = document.querySelector('#temp');
-                if (checkBefore !== null) {
-                    checkBefore.remove();
+                const checkTemp = document.querySelector('#temp');
+                if (checkTemp !== null) {
+                    checkTemp.remove();
+                }
+
+                const checkConc = document.querySelector('#conc');
+                if (checkConc !== null) {
+                    checkConc.remove();
                 }
 
                 const containerEp = document.createElement('div');
-                containerEp.className = 'col-12 col-md-5';
+                containerEp.className = 'col-10 col-md-5';
                 containerEp.id = 'Ep';
 
                 const titleEp = document.createElement('label');
@@ -97,7 +103,7 @@ const init = async () => {
                 categoria.insertAdjacentElement('afterend', containerEp);
 
                 const containerTemp = document.createElement('div');
-                containerTemp.className = 'col-12 col-md-7';
+                containerTemp.className = 'col-12 col-md-5';
                 containerTemp.id = 'temp';
 
                 const titleTemp = document.createElement('label');
@@ -114,12 +120,33 @@ const init = async () => {
                 containerTemp.appendChild(titleTemp);
                 containerTemp.appendChild(inputTemp);
                 categoria.insertAdjacentElement('afterend', containerTemp); 
+
+                const concluidoCheck = document.createElement('div');
+                concluidoCheck.className = 'col-3 col-md-2 d-flex flex-column align-items-center justify-content-end';
+                concluidoCheck.id = 'conc';
+
+                const labelCheck = document.createElement('label');
+                labelCheck.htmlFor = 'concluido';
+                labelCheck.textContent = 'concluido?';
+                labelCheck.className = 'form-label';
+
+                const inputCheck = document.createElement('input');
+                inputCheck.type = 'checkbox';
+                inputCheck.className = 'form-check field';
+                inputCheck.name = 'concluido';
+                inputCheck.value = 'concluido';
+
+                concluidoCheck.appendChild(labelCheck);
+                concluidoCheck.appendChild(inputCheck);
+                comentario.insertAdjacentElement('beforebegin', concluidoCheck);
             } else {
                 const checkEP = document.querySelector('#Ep');
-                const checkBefore = document.querySelector('#temp');
+                const checkTemp = document.querySelector('#temp');
+                const checkConc = document.querySelector('#temp');
 
                 checkEP.remove();
-                checkBefore.remove();
+                checkTemp.remove();
+                checkConc.remove();
             }
         });
     })
@@ -134,16 +161,24 @@ const init = async () => {
         const tipo = formData.get('tipo');
         const nota = formData.get('nota');
         const data = formData.get('data');
+        const temp  = formData.get('temp');
+        const ep = formData.get('Ep');
+        const concluido = formData.get('concluido');
         const categorias = formData.getAll('categorias');
         const comentario = formData.get('comentario');
+        const poster = formData.get('poster');
 
         const objForm = {
             titulo: titulo,
             tipo: tipo,
             nota: nota,
             data: data,
+            temp: temp,
+            ep: ep,
+            concluido: concluido,
             categorias: categorias,
-            comentario: comentario
+            comentario: comentario,
+            poster: poster
         };
 
         const result = await fetch('/catalogue/insert', {
@@ -162,7 +197,7 @@ const init = async () => {
                 check_error_div.remove();
             }
 
-            const com_camp = document.querySelector('#comentario');
+            const poster_text = document.querySelector('#poster-text');
             const error_div = document.createElement('div');
             error_div.className = 'col-12 error-div';
 
@@ -172,8 +207,11 @@ const init = async () => {
                 case "ParamsError":
                     error_msg.textContent = 'Todos os parâmetros são obrigatórios.';
                     break;
-                case "AlreadyExist":
+                case "AlreadyExists":
                     error_msg.textContent = 'Já está inserido no banco de dados';
+                    break;
+                case "NotIncludedRight":
+                    error_msg.textContent = 'Não foi corretamente incluido';
                     break;
                 default:
                     error_msg.textContent = 'Server error, insert não efetuado.'
@@ -182,7 +220,7 @@ const init = async () => {
 
             error_div.appendChild(error_msg);
 
-            com_camp.insertAdjacentElement("afterend", error_div);
+            poster_text.insertAdjacentElement("afterend", error_div);
         }
     })
 }

@@ -163,6 +163,15 @@ const init = async () => {
 
         ficha.appendChild(ep_dt);
         ficha.appendChild(ep_dd);
+    } else if ((tipo === "series" || tipo === "cartoons") && data.concluido) {
+        const conc_dt = document.createElement('dt');
+        const conc_dd = document.createElement('dd');
+
+        conc_dt.textContent = 'Concluido:';
+        conc_dd.textContent = 'sim';
+
+        ficha.appendChild(conc_dt);
+        ficha.appendChild(conc_dd);
     }
 
 

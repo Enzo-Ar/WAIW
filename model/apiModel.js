@@ -71,22 +71,41 @@ export const getById = async (tipo, id) => {
     }
 };
 
-export const insertInCat = async (title, tipo, nota, temp, ep, data, comentario) => {
-    try {
-        let queryUrl;
-        let params;
-        if (tipo === "filmes") {
-            queryUrl = "INSERT INTO filmes(nome, data_assistido, nota, comentario) VALUES($1, $2, $3, $4)"
-            params = [title, data, nota, comentario];
-        } else if (tipo === "series") {
+export const getIdByName = async (name, tipo) => {
+    if (!name) {
+        throw new ParamsError('Nenhum Nome passado para Procura');
+    }
 
+    try {
+        let queryUrl
+        if (tipo === "filmes") {
+            queryUrl = 'SELECT id FROM filmes WHERE nome = $1';
+        } else if (tipo === "series") {
+            queryUrl = 'SELECT id FROM series WHERE nome = $1';
+        } else {
+            queryUrl = 'SELECT id FROM cartoons WHERE nome = $1';
         }
-        await query(queryUrl, params); //query para a tabela do tipo em si
-        //query para os generos do tipo
+        const result = await query(queryUrl, [name]);
+        
+        if (result.rows.length === 0) {
+            throw new NotFoundError('Not found by name to get id');
+        }else if (result.rows.length > 1) {
+            throw new RequestError('Already Exists in catalogue');
+        }
+
+        return result.rows[0].id;
     } catch(err) {
-        if (err instanceof RequestError) {
+        if (err instanceof NotFoundError || err instanceof RequestError) {
             throw err;
         }
+        throw new QueryError("Falha na Query", err);
+    }
+}  
+
+export const insertCatAndGenre = async (queryUrl, params) => {
+    try {
+        await query(queryUrl, params);
+    } catch(err) {
         throw new QueryError("Falha na Query", err);
     }
 }
