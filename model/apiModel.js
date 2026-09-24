@@ -11,19 +11,19 @@ export const getAll = async (tipo) => {
     const queryStr = tipo === "filmes" ? 'SELECT * FROM filmes;' : tipo === "series" ? 'SELECT * FROM series;' : tipo === "cartoons" ? "SELECT * FROM cartoons;" : null;
     
     if (!queryStr) {
-        throw new ParamsError("Tipo inexistente passado como parâmetro");
+        throw new ParamsError("getAll: Tipo inexistente passado como parâmetro");
     } else {
         try {
             const result = await query(queryStr);
             if (result.rows.length === 0) {
-                throw new NotFoundError("Falha na busca, resultado talvez inexistente");
+                throw new NotFoundError("getAll: Falha na busca, resultado talvez inexistente");
             }
             return result.rows;
         } catch(err) {
             if(err instanceof NotFoundError) {
                 throw err;
             } 
-            throw new QueryError("Falha na Query", err);
+            throw new QueryError("getAll: Falha na Query", err);
         }
     }
 };
@@ -54,26 +54,26 @@ export const getById = async (tipo, id) => {
     const replacers = [id];
 
     if (!queryStr) {
-        throw new ParamsError("Tipo inexistente passado como parâmetro");
+        throw new ParamsError("getById: Tipo inexistente passado como parâmetro");
     } else {
         try {
             const result = await query(queryStr, replacers);
             if (result.rows.length === 0) {
-                throw new NotFoundError("Falha na busca, resultado talvez inexistente");
+                throw new NotFoundError("getById: Falha na busca, resultado talvez inexistente");
             }
             return result.rows;
         } catch(err) {
             if(err instanceof NotFoundError) {
                 throw err;
             }
-            throw new QueryError("Falha na Query", err);
+            throw new QueryError("getById: Falha na Query", err);
         }
     }
 };
 
 export const getIdByName = async (name, tipo) => {
     if (!name) {
-        throw new ParamsError('Nenhum Nome passado para Procura');
+        throw new ParamsError('getIdByName: Nenhum Nome passado para Procura');
     }
 
     try {
@@ -88,9 +88,9 @@ export const getIdByName = async (name, tipo) => {
         const result = await query(queryUrl, [name]);
         
         if (result.rows.length === 0) {
-            throw new NotFoundError('Not found by name to get id');
+            throw new NotFoundError('getIdByName: Not found by name to get id');
         }else if (result.rows.length > 1) {
-            throw new RequestError('Already Exists in catalogue');
+            throw new RequestError('getIdByName: Already Exists in catalogue');
         }
 
         return result.rows[0].id;
@@ -98,21 +98,69 @@ export const getIdByName = async (name, tipo) => {
         if (err instanceof NotFoundError || err instanceof RequestError) {
             throw err;
         }
-        throw new QueryError("Falha na Query", err);
+        throw new QueryError("getIdByName: Falha na Query", err);
     }
 }  
 
-export const insertCatAndGenre = async (queryUrl, params) => {
+export const insertFilme = async (title, data, nota, comentario, poster) => {
+    if (!title || !data || !nota || !comentario || !poster) {
+        throw new ParamsError('insertFilme: Faltando parametros');
+    }
+
     try {
-        await query(queryUrl, params);
+        const queryStr = "INSERT INTO filmes(nome, data_assistido, nota, comentario, poster) VALUES($1, $2, $3, $4, $5)";
+        const params = [title, data, nota, comentario, poster];
+
+        await query(queryStr, params);
+        return;
     } catch(err) {
-        throw new QueryError("Falha na Query", err);
+        throw new QueryError("insertFilme: Falha na Query", err);
+    }
+}
+
+export const insertSerie = async (title, data, temp, ep, nota, comentario, poster, conc) => {
+    if (!title || !data || !nota || !comentario || !poster) {
+        throw new ParamsError('insertSerie: Faltando parametros');
+    }
+
+    try {
+        const queryStr = "INSERT INTO series(nome, data_assistido, p_temp, p_ep, nota, comentario, poster, concluido) VALUES($1, $2, $3, $4, $5, $6, $7, $8)"
+        const params = [title, data, temp, ep, nota, comentario, poster, conc];
+
+        await query(queryStr, params);
+        return;
+    } catch(err) {
+        throw new QueryError("insertSerie: Falha na Query", err);
+    }
+}
+
+export const insertCartoon = async (title, data, temp, ep, nota, comentario, poster, conc) => {
+    if (!title || !data || !nota || !comentario || !poster) {
+        throw new ParamsError('insertCartoon: Faltando parametros');
+    }
+
+    try {
+        const queryStr = "INSERT INTO cartoons(nome, data_assistido, p_temp, p_ep, nota, comentario, poster, concluido) VALUES($1, $2, $3, $4, $5, $6, $7, $8)"
+        const params = [title, data, temp, ep, nota, comentario, poster, conc];
+
+        await query(queryStr, params);
+        return;
+    } catch(err) {
+        throw new QueryError("insertCartoon: Falha na Query", err);
+    }
+}
+
+export const insertGeneric = async (queryStr, params) => {
+    try {
+        await query(queryStr, params);
+    } catch(err) {
+        throw new QueryError("insertGeneric: Falha na Query", err);
     }
 }
 
 export const insertUser = async (username, email, pssw) => {
     if (!username || !email || !pssw) {
-        throw new ParamsError("Email, Senha e Username são obrigatorios");
+        throw new ParamsError("insertUser: Email, Senha e Username são obrigatorios");
     }
 
     try {
@@ -123,20 +171,20 @@ export const insertUser = async (username, email, pssw) => {
         if (err instanceof RequestError) {
             throw err;
         }
-        throw new QueryError("Falha na Query", err);
+        throw new QueryError("insertUser: Falha na Query", err);
     }
 }
 
 export const getUser = async (email) => {
     if (!email) {
-        throw new ParamsError("Email é obrigatorio para buscar usuario");
+        throw new ParamsError("getUser: Email é obrigatorio para buscar usuario");
     }
 
     try {
         const user = await query("SELECT * FROM users WHERE email = $1", [email]);
 
         if (user.rows.length === 0) {
-            throw new NotFoundError("Usuario Inexistente");
+            throw new NotFoundError("getUser: Usuario Inexistente");
         }
 
         return user.rows[0];
@@ -144,44 +192,44 @@ export const getUser = async (email) => {
         if (err instanceof NotFoundError) {
             throw err;
         }
-        throw new QueryError("Falha na Query", err);
+        throw new QueryError("getUser: Falha na Query", err);
     }
 }
 
 export const getRows = async (email) => {
-    if (!email) throw new ParamsError("Email é obrigatorio para buscar rows");
+    if (!email) throw new ParamsError("getRows: Email é obrigatorio para buscar rows");
 
     try {
         const result = await query("SELECT * FROM users WHERE email = $1", [email]);
         return result;
     } catch(err) {
-        throw new QueryError("Falha na Query", err);
+        throw new QueryError("getRows: Falha na Query", err);
     }
 }
 
 export const insertRefresh = async (user_id, revoked, expireAt, createdAt, token_hash) => {
     if ( !user_id || revoked === null || !expireAt || !createdAt || !token_hash) {
-        throw new ParamsError("Sem Dados o suficiente");
+        throw new ParamsError("insertRefresh: Sem Dados o suficiente");
     }
 
     try {
         const params = [user_id, revoked, expireAt, createdAt, token_hash];
         await query("INSERT INTO jwt_refresh(user_id, revoked, expires, created, token_hash) VALUES ($1, $2, $3, $4, $5)", params);
     } catch(err) {
-        throw new QueryError("Falha Query Insert", err);
+        throw new QueryError("insertRefresh: Falha na Query", err);
     }
 }
 
 export const getRefresh = async (hashedToken) => {
     if (!hashedToken) {
-        throw new ParamsError("Nenhum Token passado");
+        throw new ParamsError("getRefresh: Nenhum Token passado");
     }
 
     try{
         const result = await query('SELECT * FROM jwt_refresh WHERE token_hash = $1', [hashedToken]);
 
         if (result.rows.length === 0) {
-            throw new NotFoundError("Token não existe");
+            throw new NotFoundError("getRefresh: Token não existe");
         }
 
         return result.rows[0];
@@ -190,19 +238,19 @@ export const getRefresh = async (hashedToken) => {
             throw err
         }
         console.log(err);
-        throw new QueryError("Falha na Query", err);
+        throw new QueryError("getRefresh: Falha na Query", err);
     }
 }
 
 export const deleteRefresh = async (hashedToken) => {
     if (!hashedToken) {
-        throw new ParamsError("Nenhum Token passado");
+        throw new ParamsError("deleteRefresh: Nenhum Token passado");
     }
 
     try{
         await query('DELETE FROM jwt_refresh WHERE token_hash = $1', [hashedToken]);
     } catch(err) {
-        throw new QueryError("Falha na Query", err);
+        throw new QueryError("deleteRefresh: Falha na Query", err);
     }
 }
 
@@ -211,6 +259,6 @@ export const getCate = async () => {
         const result = await query('SELECT * FROM generos');
         return result.rows
     } catch(err) {
-        throw new QueryError('Falha na Query', err);
+        throw new QueryError('getCate: Falha na Query', err);
     }
 }

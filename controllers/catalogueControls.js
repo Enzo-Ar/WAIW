@@ -1,8 +1,7 @@
 import ParamsError from '../exceptions/ParamsError.js';
-import QueryError from '../exceptions/QueryError.js';
 import RequestError from "../exceptions/RequestError.js";
 import NotFoundError from "../exceptions/NotFoundError.js";
-import { getCate, getIdByName, insertCatAndGenre } from '../model/apiModel.js';
+import { getCate, getIdByName, insertCartoon, insertFilme, insertGeneric, insertSerie } from '../model/apiModel.js';
 
 export const insertCatalogue = async (req, res) => {
     const title = req.body.titulo;
@@ -28,35 +27,37 @@ export const insertCatalogue = async (req, res) => {
     }
 
     try {
-        let queryUrl;
-        let params;
+        let genreQueryStr;
+        switch (tipo) {
+            case "filmes":
+                await insertFilme(title, data, nota, comentario, poster);
+                genreQueryStr = "INSERT INTO filmes_generos(filme_id, gen_id) VALUES($1, $2)";
+                break;
 
-        let genreQueryUrl;
-        if (tipo === "filmes") {
-            queryUrl = "INSERT INTO filmes(nome, data_assistido, nota, comentario, poster) VALUES($1, $2, $3, $4, $5)"
-            params = [title, data, nota, comentario, poster];
+            case "series":
+                await insertSerie(title, data, temp, ep, nota, comentario, poster, conc);
+                genreQueryStr = "INSERT INTO series_generos(serie_id, gen_id) VALUES($1, $2)";
+                break;
+            
+            case "cartoons":
+                await insertCartoon(title, data, temp, ep, nota, comentario, poster, conc);
+                genreQueryStr = "INSERT INTO cartoons_generos(cartoon_id, gen_id) VALUES($1, $2)";
+                break;
 
-            genreQueryUrl = "INSERT INTO filmes_generos(filme_id, gen_id) VALUES($1, $2)";
-        } else if (tipo === "series") {
-            queryUrl = "INSERT INTO series(nome, data_assistido, p_temp, p_ep, nota, comentario, poster, concluido) VALUES($1, $2, $3, $4, $5, $6, $7, $8)"
-            params = [title, data, temp, ep, nota, comentario, poster, conc];
-
-            genreQueryUrl = "INSERT INTO series_generos(serie_id, gen_id) VALUES($1, $2)";
-        } else if (tipo === "cartoons") {
-            queryUrl = "INSERT INTO cartoons(nome, data_assistido, p_temp, p_ep, nota, comentario, poster, concluido) VALUES($1, $2, $3, $4, $5, $6, $7, $8)"
-            params = [title, data, temp, ep, nota, comentario, poster, conc];
-
-            genreQueryUrl = "INSERT INTO cartoons_generos(cartoon_id, gen_id) VALUES($1, $2)";
-        } else {
-            throw new ParamsError('tipo não existente');
+            default:
+                throw new ParamsError('insertCatalogue: tipo não existente');
         }
-        await insertCatAndGenre(queryUrl, params) //query para a tabela do tipo em si
+
         const newId = await getIdByName(title, tipo);
+
         for (const gen_id of generos) {
-            await insertCatAndGenre(genreQueryUrl, [newId, gen_id]);
+            await insertGeneric(genreQueryStr, [newId, gen_id]);
         }
+
         res.status(200).json({"msg": "all went well"});
     } catch(err) {
+        console.log(err);
+
         if (err instanceof ParamsError) {
             res.status(400).json({"erro": "ParamsError"});
         } else if (err instanceof RequestError) {
@@ -64,7 +65,6 @@ export const insertCatalogue = async (req, res) => {
         } else if (err instanceof NotFoundError) {
             res.status(500).json({"erro": "NotIncludedRight"});
         } else {
-            console.log(err);
             res.status(500).json({"erro": "QueryError"});
         }
     }

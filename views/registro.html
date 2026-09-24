@@ -51,54 +51,12 @@
           <div class="col-lg-8">
             <div class="entry-card">
               <span class="entry-card__tape" aria-hidden="true"></span>
-              <h2 class="entry-card__title">Novo registro</h2>
+              <span class="d-flex">
+                <h2 class="entry-card__title" id="novo"><a href="?method=novo">Novo registro</a></h2>
+                <h2 class="entry-card__title ms-4" id="mod"><a href="?method=mod">Atualizar registro</a></h2>
+              </span>
 
-              <form id="regForm">
-                <div class="row g-3">
-                  <div class="col-12 col-md-7">
-                    <label for="titulo" class="form-label">Título</label>
-                    <input type="text" class="form-control field" id="titulo" name="titulo" placeholder="Nome do filme, série ou desenho">
-                  </div>
-
-                  <div class="col-12 col-md-5 d-flex justify-content-between align-items-end">
-                      <label class="form-label"><input type="radio" name="tipo" id="slc-filme" value="filmes" class="form-check-input" checked>Filme</label>
-                      <label class="form-label"><input type="radio" name="tipo" id="slc-serie" value="series" class="form-check-input">Serie</label>
-                      <label class="form-label"><input type="radio" name="tipo" id="slc-cartoon" value="cartoons" class="form-check-input">Cartoon</label>
-                  </div>
-
-                  <div class="col-6 col-md-3">
-                    <label for="nota" class="form-label">Nota</label>
-                    <input type="number" class="form-control field" id="nota" name="nota" placeholder="0 a 5" min="0" max="5" step="0.1">
-                  </div>
-
-                  <div class="col-6 col-md-4">
-                    <label for="data" class="form-label">Lançado em:</label>
-                    <input type="date" class="form-control field" id="data" name="data">
-                  </div>
-
-                  <div class="col-12 col-md-5" id="categoria">
-                    <label for="categorias" class="form-label">Categorias:</label>
-                    <select name="categorias" id="categorias" class="form-select field" multiple>
-                    </select>
-                    <!-- <label for="categoria" class="form-label">Categoria</label>
-                    <input type="text" class="form-control field" id="categoria" name="categoria" placeholder="Ex: comédia, ação, etc"> -->
-                  </div>
-
-                  <div class="col-12" id="comentario">
-                    <label for="comentario" class="form-label">Comentário</label>
-                    <textarea class="form-control field" id="comentario" name="comentario" rows="3" placeholder="Escreva aqui"></textarea>
-                  </div>
-
-                  <div class="col-12" id="poster-text">
-                    <label for="poster" class="form-label">Poster link:</label>
-                    <textarea class="form-control field" id="poster" name="poster" rows="1" placeholder="Cole aqui"></textarea>
-                  </div>
-
-                  <div class="col-12">
-                    <button type="submit" class="btn-save">Salvar registro</button>
-                  </div>
-                </div>
-              </form>
+              <!-- FORM ESTARÁ AQUI -->
             </div>
           </div>
         </div>
