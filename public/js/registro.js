@@ -19,6 +19,100 @@ function decodificarJWT(token) {
     }
 }
 
+function tempAndEp(slc, putDown, putUp, method) {
+    if (slc.value === 'series' || slc.value === 'cartoons') {
+        const checkEP = document.querySelector('#Ep');
+        if (checkEP !== null) {
+            checkEP.remove();
+        }
+
+        const checkTemp = document.querySelector('#temp');
+        if (checkTemp !== null) {
+            checkTemp.remove();
+        }
+
+        const checkConc = document.querySelector('#conc');
+        if (checkConc !== null) {
+            checkConc.remove();
+        }
+
+        const containerEp = document.createElement('div');
+
+        if (method === "novo") {
+            containerEp.className = 'col-10 col-md-5';
+        } else if (method === "mod") {
+            containerEp.className = 'col-12';
+        }
+
+        containerEp.id = 'Ep';
+
+        const titleEp = document.createElement('label');
+        titleEp.htmlFor = 'Ep';
+        titleEp.className = 'form-label';
+        titleEp.textContent = 'Episodio que parei:';
+
+        const inputEp = document.createElement('input');
+        inputEp.type = 'number';
+        inputEp.className = 'form-control field';
+        inputEp.name = 'Ep';
+        inputEp.placeholder = 'Episodio aqui';
+
+        containerEp.appendChild(titleEp);
+        containerEp.appendChild(inputEp);
+        putDown.insertAdjacentElement('afterend', containerEp);
+
+        const containerTemp = document.createElement('div');
+        if (method === "novo") {
+            containerTemp.className = 'col-10 col-md-5';
+        } else if (method === "mod") {
+            containerTemp.className = 'col-12';
+        }
+        containerTemp.id = 'temp';
+
+        const titleTemp = document.createElement('label');
+        titleTemp.htmlFor = 'temp';
+        titleTemp.className = 'form-label';
+        titleTemp.textContent = 'Temporada que parei:';
+
+        const inputTemp = document.createElement('input');
+        inputTemp.type = 'number';
+        inputTemp.className = 'form-control field';
+        inputTemp.name = 'temp';
+        inputTemp.placeholder = 'Temporada aqui';
+
+        containerTemp.appendChild(titleTemp);
+        containerTemp.appendChild(inputTemp);
+        putDown.insertAdjacentElement('afterend', containerTemp); 
+
+        const concluidoCheck = document.createElement('div');
+        concluidoCheck.className = 'col-3 col-md-2 d-flex flex-column align-items-center justify-content-end';
+        concluidoCheck.id = 'conc';
+
+        const labelCheck = document.createElement('label');
+        labelCheck.htmlFor = 'concluido';
+        labelCheck.textContent = 'concluido?';
+        labelCheck.className = 'form-label';
+
+        const inputCheck = document.createElement('input');
+        inputCheck.type = 'checkbox';
+        inputCheck.className = 'form-check field mb-3';
+        inputCheck.name = 'concluido';
+        inputCheck.value = 'concluido';
+
+        concluidoCheck.appendChild(labelCheck);
+        concluidoCheck.appendChild(inputCheck);
+        putUp.insertAdjacentElement('beforebegin', concluidoCheck);
+    } else {
+        const checkEP = document.querySelector('#Ep');
+        const checkTemp = document.querySelector('#temp');
+        const checkConc = document.querySelector('#conc');
+
+        checkEP.remove();
+        checkTemp.remove();
+        checkConc.remove();
+    }
+}
+
 const init = async () => {
     //checando para autorização e autenticação
     const refreshRes = await fetch('/refresh', {method: 'POST'});
@@ -56,292 +150,100 @@ const init = async () => {
     const method = params.get('method');
     const entry_card = document.querySelector('.entry-card');
 
-    if (method === "novo") {
-        //INSERT - parte do registro de novas midias
-        //--------------------------------------------------------------------------------------------------------------------
-        const formSpan = document.createElement('span');
-        const htmlNovo = `
-                <form id="regForm">
-                    <div class="row g-3">
-                        <div class="col-12 col-md-7">
-                            <label for="titulo" class="form-label">Título</label>
-                            <input type="text" class="form-control field" id="titulo" name="titulo" placeholder="Nome do filme, série ou desenho">
-                        </div>
+    //INSERT - parte do registro de novas midias
+    //--------------------------------------------------------------------------------------------------------------------
 
-                        <div class="col-12 col-md-5 d-flex justify-content-between align-items-end">
-                            <label class="form-label"><input type="radio" name="tipo" id="slc-filme" value="filmes" class="form-check-input" checked>Filme</label>
-                            <label class="form-label"><input type="radio" name="tipo" id="slc-serie" value="series" class="form-check-input">Serie</label>
-                            <label class="form-label"><input type="radio" name="tipo" id="slc-cartoon" value="cartoons" class="form-check-input">Cartoon</label>
-                        </div>
+    const CatSelect = document.querySelector('#categorias')
+    const genResult = await fetch('/catalogue/categorias');
+    const generos = await genResult.json();
+    generos.forEach(genero => {
+        const newOption = document.createElement('option');
+        newOption.value = genero.id;
+        newOption.textContent = genero.nome_gen;
 
-                        <div class="col-6 col-md-3">
-                            <label for="nota" class="form-label">Nota</label>
-                            <input type="number" class="form-control field" id="nota" name="nota" placeholder="0 a 5" min="0" max="5" step="0.1">
-                        </div>
+        CatSelect.appendChild(newOption);
+    })
 
-                        <div class="col-6 col-md-4">
-                            <label for="data" class="form-label">Lançado em:</label>
-                            <input type="date" class="form-control field" id="data" name="data">
-                        </div>
+    const slcs = document.querySelectorAll('input[type=radio]');
+    const categoria = document.querySelector('#categoria');
+    const comentario = document.querySelector('#comentario');
 
-                        <div class="col-12 col-md-5" id="categoria">
-                            <label for="categorias" class="form-label">Categorias:</label>
-                            <select name="categorias" id="categorias" class="form-select field" multiple>
-                            </select>
-                            <!-- <label for="categoria" class="form-label">Categoria</label>
-                            <input type="text" class="form-control field" id="categoria" name="categoria" placeholder="Ex: comédia, ação, etc"> -->
-                        </div>
+    slcs.forEach(slc => {
+        slc.addEventListener('change', (event) => {
+            tempAndEp(slc, categoria, comentario);
+        });
+    })
 
-                        <div class="col-12" id="comentario">
-                            <label for="comentario" class="form-label">Comentário</label>
-                            <textarea class="form-control field" id="comentario" name="comentario" rows="3" placeholder="Escreva aqui"></textarea>
-                        </div>
+    const regForm = document.querySelector('#regForm');
+    regForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-                        <div class="col-12" id="poster-text">
-                            <label for="poster" class="form-label">Poster link:</label>
-                            <textarea class="form-control field" id="poster" name="poster" rows="1" placeholder="Cole aqui"></textarea>
-                        </div>
+        const formData = new FormData(event.target);
 
-                        <div class="col-12">
-                            <button type="submit" class="btn-save">Salvar registro</button>
-                        </div>
-                    </div>
-                </form>`;
-        formSpan.innerHTML = htmlNovo;
-        entry_card.appendChild(formSpan);
+        const titulo = formData.get('titulo');
+        const tipo = formData.get('tipo');
+        const nota = formData.get('nota');
+        const data = formData.get('data');
+        const temp  = formData.get('temp');
+        const ep = formData.get('Ep');
+        const concluido = formData.get('concluido');
+        const categorias = formData.getAll('categorias');
+        const comentario = formData.get('comentario');
+        const poster = formData.get('poster');
 
-        const CatSelect = document.querySelector('#categorias')
-        const genResult = await fetch('/catalogue/categorias');
-        const generos = await genResult.json();
-        generos.forEach(genero => {
-            const newOption = document.createElement('option');
-            newOption.value = genero.id;
-            newOption.textContent = genero.nome_gen;
+        const objForm = {
+            titulo: titulo,
+            tipo: tipo,
+            nota: nota,
+            data: data,
+            temp: temp,
+            ep: ep,
+            concluido: concluido,
+            categorias: categorias,
+            comentario: comentario,
+            poster: poster
+        };
 
-            CatSelect.appendChild(newOption);
-        })
+        const result = await fetch('/catalogue/insert', {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify(objForm)
+        });
 
-        const slcs = document.querySelectorAll('input[type=radio]');
-        const categoria = document.querySelector('#categoria');
-        const comentario = document.querySelector('#comentario');
+        if (!result.ok) {
+            const r = await result.json();
 
-        slcs.forEach(slc => {
-            slc.addEventListener('change', (event) => {
-                if (slc.value === 'series' || slc.value === 'cartoons') {
-                    const checkEP = document.querySelector('#Ep');
-                    if (checkEP !== null) {
-                        checkEP.remove();
-                    }
-
-                    const checkTemp = document.querySelector('#temp');
-                    if (checkTemp !== null) {
-                        checkTemp.remove();
-                    }
-
-                    const checkConc = document.querySelector('#conc');
-                    if (checkConc !== null) {
-                        checkConc.remove();
-                    }
-
-                    const containerEp = document.createElement('div');
-                    containerEp.className = 'col-10 col-md-5';
-                    containerEp.id = 'Ep';
-
-                    const titleEp = document.createElement('label');
-                    titleEp.htmlFor = 'Ep';
-                    titleEp.className = 'form-label';
-                    titleEp.textContent = 'Episodio que parei:';
-
-                    const inputEp = document.createElement('input');
-                    inputEp.type = 'number';
-                    inputEp.className = 'form-control field';
-                    inputEp.name = 'Ep';
-                    inputEp.placeholder = 'Episodio aqui';
-
-                    containerEp.appendChild(titleEp);
-                    containerEp.appendChild(inputEp);
-                    categoria.insertAdjacentElement('afterend', containerEp);
-
-                    const containerTemp = document.createElement('div');
-                    containerTemp.className = 'col-12 col-md-5';
-                    containerTemp.id = 'temp';
-
-                    const titleTemp = document.createElement('label');
-                    titleTemp.htmlFor = 'temp';
-                    titleTemp.className = 'form-label';
-                    titleTemp.textContent = 'Temporada que parei:';
-
-                    const inputTemp = document.createElement('input');
-                    inputTemp.type = 'number';
-                    inputTemp.className = 'form-control field';
-                    inputTemp.name = 'temp';
-                    inputTemp.placeholder = 'Temporada aqui';
-
-                    containerTemp.appendChild(titleTemp);
-                    containerTemp.appendChild(inputTemp);
-                    categoria.insertAdjacentElement('afterend', containerTemp); 
-
-                    const concluidoCheck = document.createElement('div');
-                    concluidoCheck.className = 'col-3 col-md-2 d-flex flex-column align-items-center justify-content-end';
-                    concluidoCheck.id = 'conc';
-
-                    const labelCheck = document.createElement('label');
-                    labelCheck.htmlFor = 'concluido';
-                    labelCheck.textContent = 'concluido?';
-                    labelCheck.className = 'form-label';
-
-                    const inputCheck = document.createElement('input');
-                    inputCheck.type = 'checkbox';
-                    inputCheck.className = 'form-check field';
-                    inputCheck.name = 'concluido';
-                    inputCheck.value = 'concluido';
-
-                    concluidoCheck.appendChild(labelCheck);
-                    concluidoCheck.appendChild(inputCheck);
-                    comentario.insertAdjacentElement('beforebegin', concluidoCheck);
-                } else {
-                    const checkEP = document.querySelector('#Ep');
-                    const checkTemp = document.querySelector('#temp');
-                    const checkConc = document.querySelector('#conc');
-
-                    checkEP.remove();
-                    checkTemp.remove();
-                    checkConc.remove();
-                }
-            });
-        })
-
-        const regForm = document.querySelector('#regForm');
-        regForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            const formData = new FormData(event.target);
-
-            const titulo = formData.get('titulo');
-            const tipo = formData.get('tipo');
-            const nota = formData.get('nota');
-            const data = formData.get('data');
-            const temp  = formData.get('temp');
-            const ep = formData.get('Ep');
-            const concluido = formData.get('concluido');
-            const categorias = formData.getAll('categorias');
-            const comentario = formData.get('comentario');
-            const poster = formData.get('poster');
-
-            const objForm = {
-                titulo: titulo,
-                tipo: tipo,
-                nota: nota,
-                data: data,
-                temp: temp,
-                ep: ep,
-                concluido: concluido,
-                categorias: categorias,
-                comentario: comentario,
-                poster: poster
-            };
-
-            const result = await fetch('/catalogue/insert', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': "application/json"
-                },
-                body: JSON.stringify(objForm)
-            });
-
-            if (!result.ok) {
-                const r = await result.json();
-
-                const check_error_div = document.querySelector('.error-div');
-                if (check_error_div !== null) {
-                    check_error_div.remove();
-                }
-
-                const poster_text = document.querySelector('#poster-text');
-                const error_div = document.createElement('div');
-                error_div.className = 'col-12 error-div';
-
-                const error_msg = document.createElement('p');
-
-                switch (r.erro) {
-                    case "ParamsError":
-                        error_msg.textContent = 'Todos os parâmetros são obrigatórios.';
-                        break;
-                    case "AlreadyExists":
-                        error_msg.textContent = 'Já está inserido no banco de dados';
-                        break;
-                    case "NotIncludedRight":
-                        error_msg.textContent = 'Não foi corretamente incluido';
-                        break;
-                    default:
-                        error_msg.textContent = 'Server error, insert não efetuado.'
-                        break;
-                }
-
-                error_div.appendChild(error_msg);
-
-                poster_text.insertAdjacentElement("afterend", error_div);
+            const check_error_div = document.querySelector('.error-div');
+            if (check_error_div !== null) {
+                check_error_div.remove();
             }
-        })
-    } else if (method === "mod") {
-        //UPDATE - parte de atualizar midias existentes
-        //-----------------------------------------------------------------------------------------------------------
 
-        const formSpan = document.createElement('span');
-        const htmlMod = `
-                <form id="regForm">
-                    <div class="row g-2">
-                        <div class="col-12 col-md-6">
-                            <div class="col-12 h-100 d-flex flex-column" id="midia-show">
-                                <label for="midias" class="form-label">Midias:</label>
-                                <select name="midias" id="midias" class="form-select field flex-grow-1" multiple>
-                                </select>
-                            </div>
-                        </div>
-                    
-                        <div class="col-12 col-md-6 pt-5 pe-3 ps-3">
-                            <div class="col-12 d-flex justify-content-between align-items-end">
-                                <label class="form-label"><input type="radio" name="tipo" id="slc-filme" value="filmes" class="form-check-input" checked>Filme</label>
-                                <label class="form-label"><input type="radio" name="tipo" id="slc-serie" value="series" class="form-check-input">Serie</label>
-                                <label class="form-label"><input type="radio" name="tipo" id="slc-cartoon" value="cartoons" class="form-check-input">Cartoon</label>
-                            </div>
+            const poster_text = document.querySelector('#poster-text');
+            const error_div = document.createElement('div');
+            error_div.className = 'col-12 error-div';
 
-                            <hr></hr>
+            const error_msg = document.createElement('p');
 
-                            <div class="col-12">
-                                <label for="titulo" class="form-label">Título</label>
-                                <input type="text" class="form-control field" id="titulo" name="titulo" placeholder="Nome do filme, série ou desenho">
-                            </div>
+            switch (r.erro) {
+                case "ParamsError":
+                    error_msg.textContent = 'Todos os parâmetros são obrigatórios.';
+                    break;
+                case "AlreadyExists":
+                    error_msg.textContent = 'Já está inserido no banco de dados';
+                    break;
+                case "NotIncludedRight":
+                    error_msg.textContent = 'Não foi corretamente incluido';
+                    break;
+                default:
+                    error_msg.textContent = 'Server error, insert não efetuado.'
+                    break;
+            }
 
-                            <span class="d-flex justify-content-around">
-                                <div class="col-4">
-                                    <label for="nota" class="form-label">Nota</label>
-                                    <input type="number" class="form-control field" id="nota" name="nota" placeholder="0 a 5" min="0" max="5" step="0.1">
-                                </div>
+            error_div.appendChild(error_msg);
 
-                                <div class="col-6">
-                                    <label for="data" class="form-label">Lançado em:</label>
-                                    <input type="date" class="form-control field" id="data" name="data">
-                                </div>
-                            </span>
-
-                            <div class="col-12" id="comentario">
-                                <label for="comentario" class="form-label">Comentário</label>
-                                <textarea class="form-control field" id="comentario" name="comentario" rows="3" placeholder="Escreva aqui"></textarea>
-                            </div>
-
-                            <div class="col-12" id="poster-text">
-                                <label for="poster" class="form-label">Poster link:</label>
-                                <textarea class="form-control field" id="poster" name="poster" rows="1" placeholder="Cole aqui"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <button type="submit" class="btn-save">Modificar registro</button>
-                        </div>
-                    </div>
-                </form>`;
-        formSpan.innerHTML = htmlMod;
-        entry_card.appendChild(formSpan);
-    }
+            poster_text.insertAdjacentElement("afterend", error_div);
+        }
+    })
 }

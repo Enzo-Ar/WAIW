@@ -48,7 +48,7 @@ const init = async () => {
         const log_sign_href = document.createElement('a');
         log_sign_href.className = 'nav-link';
 
-        log_sign_href.href = '/registro?method=novo';
+        log_sign_href.href = '/registro';
         log_sign_href.textContent = 'Registro';
 
         log_sign.appendChild(log_sign_href);

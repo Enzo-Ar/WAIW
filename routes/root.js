@@ -1,7 +1,7 @@
 import * as express from 'express';
 const router = express.Router();
 
-import { indexFunc, catFunc, midiaFunc, loginviewFunc, signviewFunc, registroFunc } from '../controllers/rootControls.js';
+import { indexFunc, catFunc, midiaFunc, loginviewFunc, signviewFunc, registroFunc, atualizarFunc } from '../controllers/rootControls.js';
 
 router.route(['/', '/index{.html}'])
     .get(indexFunc);
@@ -20,5 +20,8 @@ router.route('/login{.html}')
 
 router.route('/registro{.html}')
     .get(registroFunc);
+
+router.route('/atualizar{.html}')
+    .get(atualizarFunc);
     
 export default router;
