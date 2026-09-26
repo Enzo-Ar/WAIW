@@ -3,6 +3,7 @@ import ParamsError from '../exceptions/ParamsError.js';
 import NotFoundError from '../exceptions/NotFoundError.js';
 import QueryError from '../exceptions/QueryError.js';
 import RequestError from '../exceptions/RequestError.js';
+import verifyParams from '../helpers/verifyParams.js';
 
 import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
@@ -159,9 +160,19 @@ export const insertGeneric = async (queryStr, params) => {
 }
 
 export const updateMidias = async (id, titulo, tipo, nota, data, temp, ep, conc, comentario, poster) => {
-    if (!id || !titulo || !tipo || !nota || !data || !temp || !ep || !comentario || !poster) {
+
+    if(tipo === "filmes"){
+        if (verifyParams(id, titulo, nota, data, comentario, poster) === false) {
+            throw new ParamsError("Todos os parametros são obrigatórios");
+        }
+    } else if (tipo === "series" || tipo === "cartoons"){
+        if (verifyParams(id, titulo, nota, data, temp, ep, comentario, poster) === false) {
+            throw new ParamsError("Todos os parametros são obrigatórios");
+        }
+    } else if (!tipo) {
         throw new ParamsError("Todos os parametros são obrigatórios");
     }
+
 
     try {
         if (tipo === "filmes") {

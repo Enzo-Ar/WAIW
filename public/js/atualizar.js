@@ -200,6 +200,10 @@ const init = async () => {
 
     slcs.forEach(slc => {
         slc.addEventListener('change', async (event) => {
+            const check_error_div = document.querySelector('.error-div');
+            if (check_error_div !== null) {
+                check_error_div.remove();
+            }
             tempAndEp(slc, joiner, line);
             limparCampos(slc.value);
             midiaSelectorFetch(slc.value);
@@ -213,6 +217,10 @@ const init = async () => {
         
         const selectedMidia = await fetch(`/api/${type}/${option.value}`);
         if (selectedMidia.ok) {
+            const check_error_div = document.querySelector('.error-div');
+            if (check_error_div !== null) {
+                check_error_div.remove();
+            }
             //todos os conteudos da midia que serão incluidos
             const titulo = document.querySelector('#titulo');
             const nota = document.querySelector('#nota');
@@ -247,6 +255,10 @@ const init = async () => {
     const regForm = document.querySelector('#regForm');
     regForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+        const check_error_div = document.querySelector('.error-div');
+        if (check_error_div !== null) {
+            check_error_div.remove();
+        }
 
         const formData = new FormData(event.target);
 
@@ -299,6 +311,9 @@ const init = async () => {
             switch (r.erro) {
                 case "ParamsError":
                     error_msg.textContent = 'Todos os parâmetros são obrigatórios.';
+                    break;
+                case "NoChange":
+                    error_msg.textContent = 'Nenhuma mudança feita.';
                     break;
                 default:
                     error_msg.textContent = 'Server error, insert não efetuado.'

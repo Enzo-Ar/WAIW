@@ -2,6 +2,7 @@ import ParamsError from '../exceptions/ParamsError.js';
 import RequestError from "../exceptions/RequestError.js";
 import NotFoundError from "../exceptions/NotFoundError.js";
 import QueryError from '../exceptions/QueryError.js';
+import verifyParams from '../helpers/verifyParams.js';
 import { getById, getCate, getIdByName, insertCartoon, insertFilme, insertGeneric, insertSerie, updateMidias } from '../model/apiModel.js';
 
 
@@ -91,7 +92,15 @@ export const updateCatalogue = async (req, res) => {
         conc = false;
     }
 
-    if (!id || !titulo || !tipo || !nota || !data || !temp || !ep || !comentario || !poster) {
+    if(tipo === "filmes"){
+        if (!verifyParams(id, titulo, nota, data, comentario, poster)) {
+            return res.status(400).json({"erro": "ParamsError"});
+        }
+    } else if (tipo === "series" || tipo === "cartoons"){
+        if (!verifyParams(id, titulo, nota, data, temp, ep, comentario, poster)) {
+            return res.status(400).json({"erro": "ParamsError"});
+        }
+    } else if (!tipo) {
         return res.status(400).json({"erro": "ParamsError"});
     }
 
@@ -99,11 +108,25 @@ export const updateCatalogue = async (req, res) => {
         const midiaQuery = await getById(tipo, id);
         const ogMidia = midiaQuery[0];
 
+        const actualDate = ogMidia.data_assistido.toISOString().split('T')[0];
+
+        if (tipo === "filmes") {
+            if (titulo === ogMidia.nome && nota == ogMidia.nota && data === actualDate && comentario === ogMidia.comentario && poster === ogMidia.poster) {
+                throw new RequestError("Nenhuma mudança feita");
+            }
+        } else if (tipo === "series" || tipo === "cartoons"){
+            if (titulo === ogMidia.nome && nota == ogMidia.nota && data === actualDate && temp == ogMidia.p_temp && ep == ogMidia.p_ep && conc === ogMidia.concluido && comentario === ogMidia.comentario && poster === ogMidia.poster) {
+                throw new RequestError("Nenhuma mudança feita");
+            }
+        }
+
         await updateMidias(id, titulo, tipo, nota, data, temp, ep, conc, comentario, poster);
         res.status(200).json({"msg": "all went well"});
     } catch(err) {
         if (err instanceof ParamsError) {
             res.status(400).json({"erro": "ParamsError"});
+        } else if (err instanceof RequestError) {
+            res.status(400).json({"erro": "NoChange"});
         } else if (err instanceof QueryError) {
             res.status(500).json({"erro": "ServerSide"});
         }
