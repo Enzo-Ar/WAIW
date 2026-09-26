@@ -19,7 +19,7 @@ function decodificarJWT(token) {
     }
 }
 
-function tempAndEp(slc, putDown, putUp, method) {
+function tempAndEp(slc, putDown, putUp) {
     if (slc.value === 'series' || slc.value === 'cartoons') {
         const checkEP = document.querySelector('#Ep');
         if (checkEP !== null) {
@@ -37,13 +37,7 @@ function tempAndEp(slc, putDown, putUp, method) {
         }
 
         const containerEp = document.createElement('div');
-
-        if (method === "novo") {
-            containerEp.className = 'col-10 col-md-5';
-        } else if (method === "mod") {
-            containerEp.className = 'col-12';
-        }
-
+        containerEp.className = 'col-10 col-md-5';
         containerEp.id = 'Ep';
 
         const titleEp = document.createElement('label');
@@ -62,11 +56,7 @@ function tempAndEp(slc, putDown, putUp, method) {
         putDown.insertAdjacentElement('afterend', containerEp);
 
         const containerTemp = document.createElement('div');
-        if (method === "novo") {
-            containerTemp.className = 'col-10 col-md-5';
-        } else if (method === "mod") {
-            containerTemp.className = 'col-12';
-        }
+        containerTemp.className = 'col-10 col-md-5';
         containerTemp.id = 'temp';
 
         const titleTemp = document.createElement('label');
@@ -143,12 +133,6 @@ const init = async () => {
         await fetch('/logout', {method: 'POST'});
         window.location.replace('/index');
     });
-
-    //Necessarios para o tipo de registro
-    const urlQuery = window.location.search;
-    const params = new URLSearchParams(urlQuery);
-    const method = params.get('method');
-    const entry_card = document.querySelector('.entry-card');
 
     //INSERT - parte do registro de novas midias
     //--------------------------------------------------------------------------------------------------------------------

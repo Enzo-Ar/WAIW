@@ -158,6 +158,25 @@ export const insertGeneric = async (queryStr, params) => {
     }
 }
 
+export const updateMidias = async (id, titulo, tipo, nota, data, temp, ep, conc, comentario, poster) => {
+    if (!id || !titulo || !tipo || !nota || !data || !temp || !ep || !comentario || !poster) {
+        throw new ParamsError("Todos os parametros são obrigatórios");
+    }
+
+    try {
+        if (tipo === "filmes") {
+            const params = [titulo, nota, data, comentario, poster, id];
+            await query(`UPDATE filmes SET nome = $1, nota = $2, data_assistido = $3, comentario = $4, poster = $5 WHERE id = $6;`, params);
+        } else if (tipo === "series" || tipo === "cartoons") {
+            const params = [titulo, nota, data, temp, ep, conc, comentario, poster, id];
+            await query(`UPDATE ${tipo} SET nome = $1, nota = $2, data_assistido = $3, p_temp = $4, p_ep = $5, concluido = $6, comentario = $7, poster = $8 WHERE id = $9`, params)
+        }
+        return;
+    } catch(err) {
+        throw new QueryError("updateCatalogue: Falha na Query", err);
+    }
+}
+
 export const insertUser = async (username, email, pssw) => {
     if (!username || !email || !pssw) {
         throw new ParamsError("insertUser: Email, Senha e Username são obrigatorios");

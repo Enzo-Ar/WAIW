@@ -1,7 +1,9 @@
 import ParamsError from '../exceptions/ParamsError.js';
 import RequestError from "../exceptions/RequestError.js";
 import NotFoundError from "../exceptions/NotFoundError.js";
-import { getCate, getIdByName, insertCartoon, insertFilme, insertGeneric, insertSerie } from '../model/apiModel.js';
+import QueryError from '../exceptions/QueryError.js';
+import { getById, getCate, getIdByName, insertCartoon, insertFilme, insertGeneric, insertSerie, updateMidias } from '../model/apiModel.js';
+
 
 export const insertCatalogue = async (req, res) => {
     const title = req.body.titulo;
@@ -66,6 +68,44 @@ export const insertCatalogue = async (req, res) => {
             res.status(500).json({"erro": "NotIncludedRight"});
         } else {
             res.status(500).json({"erro": "QueryError"});
+        }
+    }
+}
+
+export const updateCatalogue = async (req, res) => {
+    const id  = req.body.id;
+    const titulo = req.body.titulo;
+    const tipo = req.body.tipo;
+    const nota = req.body.nota;
+    const data = req.body.data;
+    const temp = req.body.temp;
+    const ep = req.body.ep;
+    const concluido = req.body.concluido;
+    const comentario = req.body.comentario;
+    const poster = req.body.poster
+
+    let conc;
+    if (concluido === "concluido") {
+        conc = true;
+    } else {
+        conc = false;
+    }
+
+    if (!id || !titulo || !tipo || !nota || !data || !temp || !ep || !comentario || !poster) {
+        return res.status(400).json({"erro": "ParamsError"});
+    }
+
+    try {
+        const midiaQuery = await getById(tipo, id);
+        const ogMidia = midiaQuery[0];
+
+        await updateMidias(id, titulo, tipo, nota, data, temp, ep, conc, comentario, poster);
+        res.status(200).json({"msg": "all went well"});
+    } catch(err) {
+        if (err instanceof ParamsError) {
+            res.status(400).json({"erro": "ParamsError"});
+        } else if (err instanceof QueryError) {
+            res.status(500).json({"erro": "ServerSide"});
         }
     }
 }
