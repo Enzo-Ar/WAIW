@@ -167,6 +167,12 @@ a {
   align-items: baseline;
   gap: 0.5rem;
   transform: rotate(-1deg);
+  transform-style: preserve-3d;
+  transition: all 0.5s ease-in-out;
+}
+
+.anim {
+  animation: FlipAnim 0.7s ease-in-out 0s 1 normal;
 }
 
 .stat-chip--alt {
@@ -178,6 +184,7 @@ a {
   font-weight: 700;
   font-size: 1.6rem;
   color: var(--color-accent-2);
+  backface-visibility: hidden;
 }
 
 .stat-chip--alt .stat-value {
@@ -189,6 +196,35 @@ a {
   font-size: 0.8rem;
   color: var(--color-paper);
   text-transform: uppercase;
+  backface-visibility: hidden;
+}
+
+.carrousel-img {
+  aspect-ratio: 2 / 3;
+  box-shadow: inset 0 0 5em 1em #000;
+  background-repeat: no-repeat;
+  background-size: cover;
+  clip-path: polygon(
+    0 0, 92% 0, 100% 8%, 100% 100%, 8% 100%, 0 92%
+  );
+  height: auto;
+}
+
+#carrousel {
+  overflow: hidden;
+  animation: carrosel 10s linear infinite;
+}
+
+.incredible-fadeout {
+  mask-image: linear-gradient(
+    to right, 
+    rgba(0, 0, 0, 0.226) 0%, 
+    black 15%, 
+    black 85%, 
+    rgba(0, 0, 0, 0.226) 100%
+  );
+
+  overflow: hidden;
 }
 
 /* ==========================================================================
@@ -767,6 +803,30 @@ input[type="radio"]::after {
 .error-div p {
   margin: 7px 0px;
   padding: 0;
+}
+
+.add-right {
+  border-right: 5px solid var(--color-accent-3);
+  justify-content: center;
+}
+
+/* ==========================================================================
+   Anims
+   ========================================================================== */
+
+@keyframes FlipAnim {
+  50% {
+    transform: rotateX(180deg);
+  }
+  100% {
+    transform: rotateX(360deg);
+  }
+}
+
+@keyframes carrosel {
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* ==========================================================================

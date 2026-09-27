@@ -21,12 +21,12 @@ function decodificarJWT(token) {
 
 function tempAndEp(slc, putDown) {
     if (slc.value === 'series' || slc.value === 'cartoons') {
-        const checkEP = document.querySelector('#Ep');
+        const checkEP = document.querySelector('#div-Ep');
         if (checkEP !== null) {
             checkEP.remove();
         }
 
-        const checkTemp = document.querySelector('#temp');
+        const checkTemp = document.querySelector('#div-temp');
         if (checkTemp !== null) {
             checkTemp.remove();
         }

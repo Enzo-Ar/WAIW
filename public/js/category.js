@@ -92,10 +92,12 @@ const init = async () => {
     const title = document.querySelector('.hero-title');
     const is_curr = document.querySelector('.is-current');
     const subtitle = document.querySelector('.hero-subtitle');
+    const chip = document.querySelector('.stat-chip');
 
     title.textContent = tipo.toUpperCase();
     is_curr.textContent = tipo;
     if (tipo === "filmes") {
+        chip.classList.add('stat-chip--alt')
         subtitle.textContent = "Filmes que assisti, não vai ter nenhum filme tipo titanic ou de terror, porque não faz o minimo sentido alguem assistir esses filme ai.";
     } else if (tipo === "series") {
         subtitle.textContent = "Series que assisti, e que provavelmente só vai ter de 2023 pra baixo, já que as recente tá tudo mei bah.";
@@ -106,103 +108,119 @@ const init = async () => {
     //A FAZER: CHECAR STATUS CODE PARA GARANTIR 200, SE NÃO, MUDAR PAGINA DE ACORDO
     const url = `/api/${tipo}`;
     const response = await fetch(url);
-    console.log(response);
     const data = await response.json();
 
-    /*
-    <div class="col-12 col-sm-6 col-lg-4">
-        <article class="record-card">
-            <span class="record-card__tape" aria-hidden="true"></span>
-            <div class="record-card__thumb">
-                <span class="record-card__letter">R</span>
-                <span class="badge-type badge-type--filme">Filme</span>
-            </div>
-            <div class="record-card__body">
-                <h3 class="record-card__title">Rampa Vazia</h3>
-                <div class="record-card__meta">
-                    <span class="meta-date">12/03/2024</span>
-                    <span class="meta-score">8.7<small>/10</small></span>
-                </div>
-                <p class="record-card__comment">"Um filme sobre andar de skate sozinho à noite. A trilha sonora carrega o filme inteiro."</p>
-            </div>
-        </article>
-    </div> */
-    const founder = document.querySelector('#founder');
-    founder.textContent = data.length;
+    if (response.ok) {
+        const founder = document.querySelector('#founder');
+        founder.textContent = data.length;
 
-    data.forEach(wanted => {
-        const wanted_lister = document.querySelector('#wanted-lister');
-        const link_card = document.createElement('a');
-        link_card.href = `/midia?tipo=${tipo}&id=${wanted.id}`;
+        data.forEach(wanted => {
+            const wanted_lister = document.querySelector('#wanted-lister');
+            const link_card = document.createElement('a');
+            link_card.href = `/midia?tipo=${tipo}&id=${wanted.id}`;
 
-        //creating wanted card
-        const card = document.createElement('div');
-        card.className = 'col-6 col-sm-4 col-lg-3';
+            //creating wanted card
+            const card = document.createElement('div');
+            card.className = 'col-6 col-sm-4 col-lg-3';
 
-        const record_card = document.createElement('article');
-        record_card.className = 'record-card';
+            const record_card = document.createElement('article');
+            record_card.className = 'record-card';
 
-        const record_card_tape = document.createElement('span');
-        record_card_tape.className = 'record-card__tape';
-        record_card_tape.ariaHidden = 'true';
+            const record_card_tape = document.createElement('span');
+            record_card_tape.className = 'record-card__tape';
+            record_card_tape.ariaHidden = 'true';
 
-        const record_card_thumb = document.createElement('div');
-        record_card_thumb.className = 'record-card__thumb';
-        record_card_thumb.style.backgroundImage = `url('${wanted.poster}')`;
+            const record_card_thumb = document.createElement('div');
+            record_card_thumb.className = 'record-card__thumb';
+            record_card_thumb.style.backgroundImage = `url('${wanted.poster}')`;
 
-        const record_card_badge = document.createElement('span');
-        record_card_badge.className = `badge-type badge-type--${tipo}`;
-        record_card_badge.textContent = tipo;
+            const record_card_badge = document.createElement('span');
+            record_card_badge.className = `badge-type badge-type--${tipo}`;
+            record_card_badge.textContent = tipo;
 
-        const record_card_body = document.createElement('div');
-        record_card_body.className = 'record-card__body';
+            const record_card_body = document.createElement('div');
+            record_card_body.className = 'record-card__body';
 
-        const record_card_title = document.createElement('h3');
-        record_card_title.className = 'record-card__title';
-        record_card_title.textContent = wanted.nome;
+            const record_card_title = document.createElement('h3');
+            record_card_title.className = 'record-card__title';
+            record_card_title.textContent = wanted.nome;
 
-        const record_card_meta = document.createElement('div');
-        record_card_meta.className = 'record-card__meta';
+            const record_card_meta = document.createElement('div');
+            record_card_meta.className = 'record-card__meta';
 
-        const meta_date = document.createElement('span');
-        meta_date.className = 'meta-date';
-        meta_date.textContent = wanted.data_assistido.toString().slice(0, 10);
+            const meta_date = document.createElement('span');
+            meta_date.className = 'meta-date';
+            meta_date.textContent = wanted.data_assistido.toString().slice(0, 10);
 
-        const meta_score = document.createElement('span');
-        meta_score.className = 'meta-score';
-        meta_score.textContent = wanted.nota;
+            const meta_score = document.createElement('span');
+            meta_score.className = 'meta-score';
+            meta_score.textContent = wanted.nota;
 
-        const small = document.createElement('small');
-        small.textContent = '/5';
+            const small = document.createElement('small');
+            small.textContent = '/5';
 
-        const record_card_comment = document.createElement('p');
-        record_card_comment.className = 'record-card__comment';
-        let com
-        if (wanted.comentario.length >= 55) {
-            com = wanted.comentario.slice(0, 50) + "...";
-        } else {
-            com = wanted.comentario;
+            const record_card_comment = document.createElement('p');
+            record_card_comment.className = 'record-card__comment';
+            let com
+            if (wanted.comentario.length >= 55) {
+                com = wanted.comentario.slice(0, 50) + "...";
+            } else {
+                com = wanted.comentario;
+            }
+            record_card_comment.textContent = com;
+
+            //here begins the appendings from up to down
+            meta_score.appendChild(small);
+            record_card_meta.appendChild(meta_date);
+            record_card_meta.appendChild(meta_score);
+
+            record_card_body.appendChild(record_card_title);
+            record_card_body.appendChild(record_card_meta);
+            record_card_body.appendChild(record_card_comment);
+
+            record_card_thumb.appendChild(record_card_badge);
+
+            record_card.appendChild(record_card_tape);
+            record_card.appendChild(record_card_thumb);
+            record_card.appendChild(record_card_body);
+
+            link_card.appendChild(record_card)
+            card.appendChild(link_card);
+
+            wanted_lister.appendChild(card);
+        });
+    } else {
+        const check_error_div = document.querySelector('.error-div');
+        if (check_error_div !== null) {
+            check_error_div.remove();
         }
-        record_card_comment.textContent = com;
 
-        //here begins the appendings from up to down
-        meta_score.appendChild(small);
-        record_card_meta.appendChild(meta_date);
-        record_card_meta.appendChild(meta_score);
+        const wanted_lister = document.querySelector('#wanted-lister');
+        const error_div = document.createElement('div');
+        error_div.className = 'col-12 mt-2 error-div add-right';
 
-        record_card_body.appendChild(record_card_title);
-        record_card_body.appendChild(record_card_meta);
-        record_card_body.appendChild(record_card_comment);
+        const error_msg = document.createElement('p');
 
-        record_card_thumb.appendChild(record_card_badge);
+        switch (data.erro) {
+            case "ParamsError":
+                error_msg.textContent = 'Server: Todos os parâmetros são obrigatórios.';
+                break;
+            case "NotFoundError":
+                error_msg.textContent = 'Nenhuma Midia encontrada.';
+                break;
+            default:
+                error_msg.textContent = 'Server error, infelizmente nada foi carregado.'
+                break;
+        }
 
-        record_card.appendChild(record_card_tape);
-        record_card.appendChild(record_card_thumb);
-        record_card.appendChild(record_card_body);
-
-        link_card.appendChild(record_card)
-        card.appendChild(link_card);
-
-        wanted_lister.appendChild(card);
-    });
+        error_div.appendChild(error_msg);
+        wanted_lister.appendChild(error_div);
+    }
+    
+    chip.addEventListener('mouseenter', (event) => {
+        chip.classList.add('anim');
+    })
+    chip.addEventListener('animationend', (event) => {
+        chip.classList.remove('anim');
+    })
 }

@@ -34,9 +34,9 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="navMenu">
           <ul class="navbar-nav gap-md-4 gap-2 mt-3 mt-md-0" id="navList">
-            <li class="nav-item"><a class="nav-link" href="categoria.html/?tipo=series">Series</a></li>
-            <li class="nav-item"><a class="nav-link" href="categoria.html/?tipo=filmes">Movies</a></li>
-            <li class="nav-item"><a class="nav-link" href="categoria.html/?tipo=cartoons">Cartoons</a></li>
+            <li class="nav-item"><a class="nav-link" href="categoria/?tipo=series">Series</a></li>
+            <li class="nav-item"><a class="nav-link" href="categoria/?tipo=filmes">Filmes</a></li>
+            <li class="nav-item"><a class="nav-link" href="categoria/?tipo=cartoons">Cartoons</a></li>
           </ul>
         </div>
       </nav>
@@ -59,18 +59,26 @@
         </div>
 
         <div class="stat-row" role="group" aria-label="Resumo do que já foi assistido">
-          <div class="stat-chip">
-            <span class="stat-value" id="num-filme"></span>
-            <span class="stat-label">filmes</span>
-          </div>
-          <div class="stat-chip stat-chip--alt">
-            <span class="stat-value" id="num-serie"></span>
-            <span class="stat-label">séries</span>
-          </div>
-          <div class="stat-chip">
-            <span class="stat-value" id="num-cartoon"></span>
-            <span class="stat-label">desenhos</span>
-          </div>
+          <a href="categoria/?tipo=series">
+            <div class="stat-chip" >
+              <span class="stat-value" id="num-serie"></span>
+              <span class="stat-label">series</span>
+            </div>
+          </a>
+          
+          <a href="categoria/?tipo=filmes">
+            <div class="stat-chip stat-chip--alt">
+              <span class="stat-value" id="num-filme"></span>
+              <span class="stat-label">filmes</span>
+            </div>
+          </a>
+          
+          <a href="categoria/?tipo=cartoons">
+            <div class="stat-chip">
+              <span class="stat-value" id="num-cartoon"></span>
+              <span class="stat-label">desenhos</span>
+            </div>
+          </a>
         </div>
       </div>
     </section>
