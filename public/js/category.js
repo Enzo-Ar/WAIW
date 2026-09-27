@@ -96,11 +96,11 @@ const init = async () => {
     title.textContent = tipo.toUpperCase();
     is_curr.textContent = tipo;
     if (tipo === "filmes") {
-        subtitle.textContent = "Movies that i watched, from shit, to shittier, to perfection, to cansei de escrever como se fosse site de verdade";
+        subtitle.textContent = "Filmes que assisti, não vai ter nenhum filme tipo titanic ou de terror, porque não faz o minimo sentido alguem assistir esses filme ai.";
     } else if (tipo === "series") {
-        subtitle.textContent = "Series assistidas tirano de minecraft, o que me entristece";
+        subtitle.textContent = "Series que assisti, e que provavelmente só vai ter de 2023 pra baixo, já que as recente tá tudo mei bah.";
     } else {
-        subtitle.textContent = "Desenho animado é muito bom slk";
+        subtitle.textContent = "Desenho animado é muito bom, não tem mais o que dizer.";
     }
 
     //A FAZER: CHECAR STATUS CODE PARA GARANTIR 200, SE NÃO, MUDAR PAGINA DE ACORDO
@@ -177,7 +177,13 @@ const init = async () => {
 
         const record_card_comment = document.createElement('p');
         record_card_comment.className = 'record-card__comment';
-        record_card_comment.textContent = wanted.comentario;
+        let com
+        if (wanted.comentario.length >= 55) {
+            com = wanted.comentario.slice(0, 50) + "...";
+        } else {
+            com = wanted.comentario;
+        }
+        record_card_comment.textContent = com;
 
         //here begins the appendings from up to down
         meta_score.appendChild(small);

@@ -91,48 +91,9 @@
         <div class="section-head">
           <h2>Registros</h2>
         </div>
-
-        <!--
-          BACKEND: o bloco .row abaixo é o modelo de uma "página" de resultados.
-          Repita o <article class="record-card"> para cada item retornado pela consulta,
-          trocando tipo, letra, título, data, nota e comentário.
-          A classe do selo (badge-type--filme / badge-type--serie / badge-type--desenho)
-          deve seguir a categoria de cada item.
-        -->
         <div class="row g-4" id="wanted-lister">
         <!-- filmes/series/cartoons -->
         </div>
-
-        <!--
-          BACKEND: estado vazio — mostrar isto no lugar da grade acima
-          quando a busca não retornar nenhum item para a categoria.
-          <div class="empty-state">
-            <h3 class="empty-state__title">Nada por aqui ainda</h3>
-            <p class="empty-state__text">Nenhum registro encontrado nessa categoria.</p>
-          </div>
-        -->
-
-        <!-- BACKEND: gerar os links de paginação de acordo com o total de páginas -->
-        <nav aria-label="Paginação de registros">
-          <ul class="pagination-row">
-            <li class="page-item page-item--disabled">
-              <a class="page-link" href="#">Anterior</a>
-            </li>
-            <li class="page-item page-item--active">
-              <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">3</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">Próxima</a>
-            </li>
-          </ul>
-        </nav>
-
       </div>
     </section>
   </main>

@@ -85,4 +85,20 @@ const init = async () => {
         navList.appendChild(log_sign);
         
     }
+
+    const num_filme = document.querySelector('#num-filme');
+    const num_serie = document.querySelector('#num-serie');
+    const num_cartoon = document.querySelector('#num-cartoon');
+
+    const resultFilme = await fetch('/api/filmes');
+    const dataFil = await resultFilme.json();
+    num_filme.textContent = dataFil.length;
+
+    const resultSerie = await fetch('/api/series');
+    const dataSer = await resultSerie.json();
+    num_serie.textContent = dataSer.length;
+
+    const resultCartoon = await fetch('/api/cartoons');
+    const dataCar = await resultCartoon.json();
+    num_cartoon.textContent = dataCar.length;
 };
