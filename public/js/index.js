@@ -86,6 +86,22 @@ const init = async () => {
         
     }
 
+    const logo = document.querySelector('.logo');
+    const logo_tape = document.querySelector('.logo-tape');
+    logo.addEventListener('mouseenter', (event) => {
+        logo_tape.classList.add('sway');
+        
+    })
+    logo.addEventListener('animationend', (event) => {
+        if (logo_tape.classList.contains('sway')) {
+            logo_tape.classList.add('up');
+            logo_tape.classList.remove('sway');
+        } else if (logo_tape.classList.contains('up')) {
+            logo_tape.classList.remove('up');
+        }
+        
+    })
+
     const num_filme = document.querySelector('#num-filme');
     const num_serie = document.querySelector('#num-serie');
     const num_cartoon = document.querySelector('#num-cartoon');
@@ -101,4 +117,14 @@ const init = async () => {
     const resultCartoon = await fetch('/api/cartoons');
     const dataCar = await resultCartoon.json();
     num_cartoon.textContent = dataCar.length;
+
+    const allChips = document.querySelectorAll('.stat-chip');
+    allChips.forEach(chip => {
+        chip.addEventListener("mouseenter", (event) => {
+            chip.classList.add('anim');
+        })
+        chip.addEventListener("animationend", (event) => {
+            chip.classList.remove('anim');
+        })
+    })
 };
